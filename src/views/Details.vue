@@ -6,7 +6,7 @@
         </ion-toolbar>
       </ion-header>
       <ion-content :fullscreen="true">
-  
+        <p>DETAILS PAGE</p>
       </ion-content>
     </ion-page>
   </template>
@@ -22,5 +22,9 @@
   ion-toolbar {
     --background: white;
     --color: black;
+  }
+
+  P {
+    color: black;
   }
   </style>
