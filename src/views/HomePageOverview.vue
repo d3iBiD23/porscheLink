@@ -4,7 +4,9 @@
     <IonHeader>
       <!-- toolbar con logo porsche y luego modelo -->
       <IonToolbar>
-        <IonTitle>My App</IonTitle>
+        <IonTitle>
+          <img src="\public\assets\logos\porscheLogo.png" alt="porscheLogo" class="porscheLogo">
+        </IonTitle>
       </IonToolbar>
       <!-- Slider superior -->
       <IonToolbar>
@@ -57,5 +59,14 @@ ion-segment-button {
 
 p {
   color: black;
+}
+
+.porscheLogo {
+  display: block;
+  margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 60px;
+  width: 50%;
 }
 </style>
