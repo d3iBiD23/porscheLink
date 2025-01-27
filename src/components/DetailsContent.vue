@@ -8,7 +8,7 @@ import { batteryHalfOutline } from 'ionicons/icons';
     <div class="details-content">
         <!-- Car Image Section -->
         <div class="car-image-section mb-8">
-            <img src="/assets/taycanImage.png" alt="Porsche Taycan" class="w-full max-w-md mx-auto" />
+            <img src="/assets/taycanImage.png" alt="Porsche Taycan" class="taycanImage" />
         </div>
 
         <!-- Total Mileage Section -->
@@ -63,6 +63,13 @@ import { batteryHalfOutline } from 'ionicons/icons';
 </template>
 
 <style scoped>
+
+.taycanImage {
+    position: relative;
+    margin-top: -100px;
+    margin-left: 100px;
+}
+
 .details-content {
     padding: 20px;
 }
