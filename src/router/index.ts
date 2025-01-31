@@ -1,54 +1,59 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router';
-import { RouteRecordRaw } from 'vue-router';
-import TabsPage from '../views/TabsPage.vue'
+import { createRouter, createWebHistory } from "@ionic/vue-router";
+import { RouteRecordRaw } from "vue-router";
+import TabsPage from "../views/TabsPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    redirect: '/tabs/homepage'
+    path: "/",
+    redirect: "/tabs/homepage",
   },
   {
-    path: '/tabs/',
+    path: "/tabs/",
     component: TabsPage,
     children: [
       {
-        path: '',
-        redirect: '/tabs/homepage'
+        path: "",
+        redirect: "/tabs/home",
       },
       {
-        path: 'homepage',
-        component: () => import('@/views/HomePageOverview.vue')
+        path: "homepage",
+        component: () => import("@/views/MainScreen.vue"),
       },
       {
-        path: 'accountpage',
-        component: () => import('@/views/AccountPage.vue')
+        path: "details",
+        component: () => import("@/views/HomePageOverview.vue"),
       },
       {
-        path: 'help',
-        component: () => import('@/views/HelpPage.vue')
-      }
-      ,
+        path: "accountpage",
+        component: () => import("@/views/AccountPage.vue"),
+      },
       {
-        path: 'details',
-        component: () => import('@/views/Details.vue')
-      }
-      ,
+        path: "help",
+        component: () => import("@/views/HelpPage.vue"),
+      },
       {
-        path: 'repair',
-        component: () => import('@/views/Repair.vue')
-      }
-      ,
+        path: "details",
+        component: () => import("@/views/Details.vue"),
+      },
       {
-        path: 'functions',
-        component: () => import('@/views/Functions.vue')
-      }
-    ]
-  }
-]
+        path: "repair",
+        component: () => import("@/views/Repair.vue"),
+      },
+      {
+        path: "functions",
+        component: () => import("@/views/Functions.vue"),
+      },
+      {
+        path: "maps",
+        component: () => import("@/views/MapsView.vue"),
+      },
+    ],
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
