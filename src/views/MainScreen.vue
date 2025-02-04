@@ -1,8 +1,7 @@
 <template>
     <IonPage>
-        <IonText class="last-updated">Last updated: 5 minutes ago</IonText>
-
         <IonContent>
+            <p class="last'last-updated">Last updated: 5 minutes ago</p>
             <div class="car-container">
                 <h1 class="car-title">
                     My Taycan Turbo S
@@ -87,11 +86,12 @@ import { useRouter } from 'vue-router';
 import {
     IonButton,
     IonContent,
-    IonHeader,
     IonIcon,
+    IonLabel,
     IonPage,
-    IonText,
-    IonToolbar
+    IonTabBar,
+    IonTabButton,
+    IonTabs,
 } from '@ionic/vue';
 import {
     batteryHalfSharp,
@@ -114,6 +114,11 @@ const goToOverview = () => {
 
 
 <style scoped>
+ion-content {
+    --background: white;
+    --color: black;
+}
+
 .last-updated {
     display: block;
     padding: 8px 16px;
