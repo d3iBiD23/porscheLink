@@ -1,8 +1,7 @@
 <template>
     <IonPage>
-        <IonText class="last-updated">Last updated: 5 minutes ago</IonText>
-
         <IonContent>
+            <IonText class="last-updated">Last updated: 5 minutes ago</IonText>
             <div class="car-container">
                 <h1 class="car-title">
                     My Taycan Turbo S
@@ -63,22 +62,6 @@
                 </div>
             </div>
         </IonContent>
-        <IonTabs>
-            <IonTabBar slot="bottom">
-                <IonTabButton tab="account" href="/tabs/accountpage">
-                    <IonIcon :icon="person"></IonIcon>
-                    <IonLabel>Account</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="map" href="/tabs/maps">
-                    <IonIcon :icon="mapOutline"></IonIcon>
-                    <IonLabel>Map</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="help" href="/tabs/help">
-                    <IonIcon :icon="helpCircleOutline"></IonIcon>
-                    <IonLabel>Help</IonLabel>
-                </IonTabButton>
-            </IonTabBar>
-        </IonTabs>
     </IonPage>
 </template>
 
@@ -163,7 +146,7 @@ const goToOverview = () => {
 .details-button {
     --border-radius: 8px;
     --border-color: #ccc;
-    --color: #000;
+    --color: white;
     margin: 16px 0;
 }
 
@@ -239,5 +222,10 @@ ion-tab-bar {
 ion-tab-button {
     --color: #666;
     --color-selected: #F28100;
+}
+
+ion-content {
+    --background: white;
+    --color: black;
 }
 </style>
