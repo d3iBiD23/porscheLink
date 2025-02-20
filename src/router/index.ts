@@ -5,7 +5,12 @@ import TabsPage from "../views/TabsPage.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/tabs/homepage",
+    redirect: "/login",
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("@/views/login/Login.vue"),
   },
   {
     path: "/tabs/",
@@ -13,39 +18,35 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "",
-        redirect: "/tabs/home",
+        redirect: "/tabs/homepage",
       },
       {
         path: "homepage",
-        component: () => import("@/views/MainScreen.vue"),
+        component: () => import("@/views/mainScreen/MainScreen.vue"),
       },
       {
         path: "details",
-        component: () => import("@/views/HomePageOverview.vue"),
+        component: () => import("@/views/vehicleDetails/HomePageOverview.vue"),
       },
       {
         path: "accountpage",
-        component: () => import("@/views/AccountPage.vue"),
+        component: () => import("@/views/account/AccountPage.vue"),
       },
       {
         path: "help",
-        component: () => import("@/views/HelpPage.vue"),
-      },
-      {
-        path: "details",
-        component: () => import("@/views/Details.vue"),
+        component: () => import("@/views/mainHelp/HelpPage.vue"),
       },
       {
         path: "repair",
-        component: () => import("@/views/Repair.vue"),
+        component: () => import("@/views/vehicleDetails/Repair.vue"),
       },
       {
         path: "functions",
-        component: () => import("@/views/Functions.vue"),
+        component: () => import("@/views/vehicleDetails/Functions.vue"),
       },
       {
         path: "maps",
-        component: () => import("@/views/MapsView.vue"),
+        component: () => import("@/views/map/MapsView.vue"),
       },
     ],
   },
