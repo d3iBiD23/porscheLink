@@ -55,7 +55,7 @@ const goToRegisterScreen = () => {
 };
 
 const goToForgotP = () => {
-    router.push('/login/forgotPwd');
+    router.push('/login/');
 };
 </script>
 

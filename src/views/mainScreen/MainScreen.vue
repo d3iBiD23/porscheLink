@@ -8,7 +8,10 @@
                 </h1>
                 <!-- CAR IMAGE SLIDER -->
                 <div class="car-slider">
-                    <img src="\public\assets\taycanImage.png" alt="Taycan Turbo S" class="car-image">
+                    <img src="/public/assets/imagesLogoMainScreen/Line 1.png" alt="line-left" class="line-left">
+                    <img src="/public/assets/imagesLogoMainScreen/Taycan.png" alt="Taycan Turbo S" class="car-model">
+                    <img src="/public/assets/imagesLogoMainScreen/Line 2.png" alt="line-left" class="line-right">
+                    <img src="/public/assets/taycanImage.png" alt="Taycan Turbo S" class="car-image">
                     <div class="dots">
                         <span class="dot active"></span>
                         <span class="dot"></span>
@@ -33,6 +36,7 @@
                         </div>
                         <div class="status-icons">
                             <ion-icon :icon="flashlightOutline"></ion-icon>
+                            
                             <ion-icon :icon="searchOutline"></ion-icon>
                         </div>
                     </div>
@@ -93,6 +97,25 @@ const goToOverview = () => {
 
 
 <style scoped>
+.line-left {
+    position: absolute;
+    margin-top: 130px;
+    left: 10px;
+}
+
+.line-right {
+    position: absolute;
+    margin-top: 130px;
+    right: 10px
+}
+
+.car-model{
+    position: absolute;
+    margin-left: 62px;
+    margin-top: 50px;
+    z-index: -1;
+}
+
 .last-updated {
     display: block;
     padding: 8px 16px;
@@ -146,7 +169,11 @@ const goToOverview = () => {
     --border-radius: 8px;
     --border-color: #444;
     --color: black;
+    font-size: 18px;
     margin: 16px 0;
+    text-transform: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
 }
 
 .battery-status {
@@ -174,43 +201,62 @@ const goToOverview = () => {
 }
 
 .range {
-    color: #666;
+    color: #1E1E1E;
 }
 
 .charging-status {
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #666;
+    color: #1E1E1E;
 }
 
 .status-icons {
     display: flex;
     justify-content: space-between;
     margin-top: 8px;
+    padding: 0 50px;
 }
 
 .action-buttons {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    display: flex;
+    justify-content: space-between; /* Distribuye los botones uniformemente */
+    gap: 8px; /* Espacio entre botones */
     margin-top: 16px;
+    width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+    max-width: 400px; /* Ajusta este valor según el tamaño del contenedor de batería */
+    margin-left: auto;
+    margin-right: auto; /* Centra los botones */
 }
 
 .action-button {
-    --padding-start: 0;
-    --padding-end: 0;
+    flex: 1; /* Hace que los botones ocupen el mismo ancho */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 2px solid #444444;
+    border-radius: 12px;
+    padding: 9px;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+    max-width: 120px; /* Limita el ancho máximo */
+    min-width: 100px; /* Evita que sean demasiado pequeños */
 }
 
 .button-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    font-weight: bold;
+    color: #444444;
 }
 
 ion-icon {
     font-size: 24px;
+    color: #1E1E1E;
 }
 
 ion-tab-bar {
@@ -225,7 +271,7 @@ ion-tab-button {
 
 ion-content {
     --background: white;
-    --color: black;
+    --color: #1E1E1E;
     font-family: 'Inter', sans-serif;
     font-weight: bold;
 }
