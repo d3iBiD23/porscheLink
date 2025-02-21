@@ -74,16 +74,12 @@ import {
     IonIcon,
     IonPage,
     IonText,
-    IonToolbar
 } from '@ionic/vue';
 import {
     batteryHalfSharp,
     carOutline,
     flashlightOutline,
-    helpCircleOutline,
     locationOutline,
-    mapOutline,
-    person,
     searchOutline,
     statsChartOutline
 } from 'ionicons/icons';
@@ -100,6 +96,8 @@ const goToOverview = () => {
 .last-updated {
     display: block;
     padding: 8px 16px;
+    margin-left: 20px;
+    margin-top: 30px;
     color: #666;
     font-size: 14px;
 }
@@ -110,8 +108,9 @@ const goToOverview = () => {
 
 .car-title {
     font-size: 24px;
-    font-weight: bold;
-    margin: 16px 0;
+    font-weight:    bold;
+    margin-top: 1px;
+    margin-left: 20px;
 }
 
 .car-slider {
@@ -227,5 +226,7 @@ ion-tab-button {
 ion-content {
     --background: white;
     --color: black;
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
 }
 </style>

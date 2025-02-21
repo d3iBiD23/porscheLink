@@ -13,6 +13,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/login/Login.vue"),
   },
   {
+    path: "/login/register",
+    name: "register",
+    component: () => import("@/views/login/Register.vue"),
+  },
+  {
+    path: "/login/forgotPwd",
+    name: "forgotPwd",
+    component: () => import("@/views/login/ForgotP.vue"),
+  },
+  {
     path: "/tabs/",
     component: TabsPage,
     children: [

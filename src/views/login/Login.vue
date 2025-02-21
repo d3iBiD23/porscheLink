@@ -9,7 +9,7 @@
                 <img src="/assets/logos/login_porsche_white.png" alt="porscheWhite">
             </div>
 
-            <form @submit.prevent="handleLogin" class="login-form">
+            <form class="login-form">
                 <div class="form-group">
                     <ion-label>Email</ion-label>
                     <ion-input type="email" v-model="email" placeholder="Email" required></ion-input>
@@ -20,42 +20,43 @@
                     <ion-input type="password" v-model="password" placeholder="Password" required></ion-input>
                 </div>
 
-                <ion-text class="forgot-password" @click="handleForgotPassword">
+                <ion-text class="forgot-password" @click="goToForgotP">
                     Forgot your password?
                 </ion-text>
 
-                <ion-button expand="block" type="submit" class="login-button">
+                <ion-button expand="block" type="submit" class="login-button" @click="goToMainScreen">
                     Login
                 </ion-button>
             </form>
             <div class="signup-prompt">
                 Don't have an account?
-                <ion-text color="warning" @click="handleSignup">Signup</ion-text>
+                <ion-text color="warning" @click="goToRegisterScreen">Signup</ion-text>
             </div>
         </div>
     </ion-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { useRouter } from 'vue-router';
 import { ref } from 'vue'
 import { IonPage, IonLabel, IonInput, IonButton, IonText, IonIcon } from '@ionic/vue'
-import { wifiOutline } from 'ionicons/icons'
 
 const email = ref('')
 const password = ref('')
 
-const handleLogin = () => {
-    // Implement login logic
-    console.log('Login attempt:', { email: email.value, password: password.value })
-}
+const router = useRouter();
 
-const handleForgotPassword = () => {
-    console.log('Forgot password clicked')
-}
+const goToMainScreen = () => {
+    router.push('/tabs/homepage');
+};
 
-const handleSignup = () => {
-    console.log('Signup clicked')
-}
+const goToRegisterScreen = () => {
+    router.push('/login/register');
+};
+
+const goToForgotP = () => {
+    router.push('/login/forgotPwd');
+};
 </script>
 
 <style scoped>
