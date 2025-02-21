@@ -6,7 +6,7 @@
 
         <div class="login-container">
             <div class="logo">
-                <img src="/public/assets/logos/login_porsche_white.png" alt="porscheWhite">
+                <img src="/assets/logos/login_porsche_white.png" alt="porscheWhite">
             </div>
 
             <form @submit.prevent="handleLogin" class="login-form">
@@ -27,12 +27,11 @@
                 <ion-button expand="block" type="submit" class="login-button">
                     Login
                 </ion-button>
-
-                <div class="signup-prompt">
-                    Don't have an account?
-                    <ion-text color="warning" @click="handleSignup">Signup</ion-text>
-                </div>
             </form>
+            <div class="signup-prompt">
+                Don't have an account?
+                <ion-text color="warning" @click="handleSignup">Signup</ion-text>
+            </div>
         </div>
     </ion-page>
 </template>
@@ -60,6 +59,11 @@ const handleSignup = () => {
 </script>
 
 <style scoped>
+.login-container {
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+}
+
 .background-video {
     position: fixed;
     right: 0;
@@ -104,11 +108,9 @@ const handleSignup = () => {
 
 .logo {
     font-family: 'Arial', sans-serif;
-    font-size: 32px;
     color: white;
     text-align: center;
-    margin: 80px 0;
-    letter-spacing: 4px;
+    margin: 80px 25px;
 }
 
 .login-form {
@@ -119,24 +121,24 @@ const handleSignup = () => {
 }
 
 .form-group {
-    margin-bottom: 24px;
+    margin-bottom: 30px;
 }
 
 ion-label {
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 8px;
     display: block;
 }
 
 ion-input {
     --background: white;
-    --padding-start: 16px;
-    --padding-end: 16px;
-    --padding-top: 16px;
-    --padding-bottom: 16px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
     --border-radius: 8px;
-    --color: black;
+    --color: gray;
     margin-top: 8px;
 }
 
@@ -144,28 +146,29 @@ ion-input {
     display: block;
     color: white;
     text-align: left;
-    margin: 16px 0 24px;
     font-size: 14px;
 }
 
 .login-button {
-    --background: #FFD700;
+    --background: #FC0;
     --color: black;
     --border-radius: 8px;
     --padding-top: 20px;
     --padding-bottom: 20px;
-    margin: 24px 0;
-    font-weight: 500;
+    margin-top: 70px;
+    font-weight: bold;
+    text-transform: none;
 }
 
 .signup-prompt {
     text-align: center;
     color: white;
     font-size: 14px;
+    margin-bottom: 55px;
 }
 
 ion-text[color="warning"] {
-    color: #FFD700;
+    color: #FC0;
     margin-left: 4px;
 }
 </style>
