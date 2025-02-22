@@ -8,7 +8,7 @@ import { batteryHalfOutline } from 'ionicons/icons';
     <div class="details-content">
         <!-- Car Image Section -->
         <div class="car-image-section mb-8">
-            <img src="/public/assets/imagesMainScreen/taycan/taycanImage.png" alt="Porsche Taycan"
+            <img src="/assets/imagesMainScreen/taycan/taycanImage.png" alt="Porsche Taycan"
                 class="taycanImage" />
         </div>
 

@@ -3,7 +3,7 @@
     <IonHeader>
       <IonToolbar>
         <IonTitle>
-          <img src="\public\assets\logos\porscheLogo.png" alt="porscheLogo" class="porscheLogo">
+          <img src="\assets\logos\porscheLogo.png" alt="porscheLogo" class="porscheLogo">
         </IonTitle>
       </IonToolbar>
       <IonToolbar>

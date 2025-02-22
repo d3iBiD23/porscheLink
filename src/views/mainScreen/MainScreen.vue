@@ -33,18 +33,18 @@
                                 <span class="range">553km</span>
                             </div>
                             <div class="charging-status">
-                                <img src="/public/assets/imagesMainScreen/ChargingStation.svg" alt="ChargingStation"
+                                <img src="/assets/imagesMainScreen/ChargingStation.svg" alt="ChargingStation"
                                     class="battery-icon">
                                 <span class="text-battery">Charging plug not connected</span>
                             </div>
                             <div class="charging-progress">
-                                <img src="/public/assets/imagesMainScreen/battery_gradient.svg" alt="battery_gradient">
+                                <img src="/assets/imagesMainScreen/battery_gradient.svg" alt="battery_gradient">
                             </div>
 
                             <div class="status-icons">
-                                <img src="/public/assets/imagesMainScreen/Headlights.svg" alt="Headlights">
+                                <img src="/assets/imagesMainScreen/Headlights.svg" alt="Headlights">
                                 <div class="separator"></div>
-                                <img src="/public/assets/imagesMainScreen/key.svg" alt="key" class="key">
+                                <img src="/assets/imagesMainScreen/key.svg" alt="key" class="key">
                             </div>
                         </div>
                     </div>
@@ -54,19 +54,19 @@
                     <div class="action-buttons">
                         <ion-button fill="clear" class="action-button">
                             <div class="button-content">
-                                <img src="/public/assets/imagesMainScreen/ChargingStation.svg" alt="ChargingStation">
+                                <img src="/assets/imagesMainScreen/ChargingStation.svg" alt="ChargingStation">
                                 <span>STATIONS</span>
                             </div>
                         </ion-button>
                         <ion-button fill="clear" class="action-button">
                             <div class="button-content">
-                                <img src="/public/assets/imagesMainScreen/ChartLine.svg" alt="ChartLine">
+                                <img src="/assets/imagesMainScreen/ChartLine.svg" alt="ChartLine">
                                 <span>STATS</span>
                             </div>
                         </ion-button>
                         <ion-button fill="clear" class="action-button">
                             <div class="button-content">
-                                <img src="/public/assets/imagesMainScreen/Engine.svg" alt="Engine">
+                                <img src="/assets/imagesMainScreen/Engine.svg" alt="Engine">
                                 <span>OBD</span>
                             </div>
                         </ion-button>
@@ -115,18 +115,18 @@ const cars = [
     {
         id: 1,
         name: "Taycan Turbo S",
-        lineLeft: "/public/assets/imagesMainScreen/taycan/lineLeftTaycan.svg",
-        modelLogo: "/public/assets/imagesMainScreen/taycan/Taycan.svg",
-        lineRight: "/public/assets/imagesMainScreen/taycan/lineRightTaycan.svg",
-        image: "/public/assets/imagesMainScreen/taycan/taycanImage.png",
+        lineLeft: "/assets/imagesMainScreen/taycan/lineLeftTaycan.svg",
+        modelLogo: "/assets/imagesMainScreen/taycan/Taycan.svg",
+        lineRight: "/assets/imagesMainScreen/taycan/lineRightTaycan.svg",
+        image: "/assets/imagesMainScreen/taycan/taycanImage.png",
     },
     {
         id: 2,
         name: "911 GT3 RS",
-        lineLeft: "/public/assets/imagesMainScreen/gt3/lineLeftGt3.svg",
-        modelLogo: "/public/assets/imagesMainScreen/gt3/911gt3rs.svg",
-        lineRight: "/public/assets/imagesMainScreen/gt3/lineRightGt3.svg",
-        image: "/public/assets/imagesMainScreen/gt3/porschegt3.png",
+        lineLeft: "/assets/imagesMainScreen/gt3/lineLeftGt3.svg",
+        modelLogo: "/assets/imagesMainScreen/gt3/911gt3rs.svg",
+        lineRight: "/assets/imagesMainScreen/gt3/lineRightGt3.svg",
+        image: "/assets/imagesMainScreen/gt3/porschegt3.png",
     },
 ];
 </script>
