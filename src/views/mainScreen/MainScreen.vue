@@ -4,65 +4,73 @@
             <IonText class="last-updated">Last updated: 5 minutes ago</IonText>
             <div class="car-container">
                 <h1 class="car-title">
-                    My Taycan Turbo S
+                    {{ getCarTitle() }}
                 </h1>
-                <!-- CAR IMAGE SLIDER -->
-                <div class="car-slider">
-                    <img src="/public/assets/imagesLogoMainScreen/Line 1.png" alt="line-left" class="line-left">
-                    <img src="/public/assets/imagesLogoMainScreen/Taycan.png" alt="Taycan Turbo S" class="car-model">
-                    <img src="/public/assets/imagesLogoMainScreen/Line 2.png" alt="line-left" class="line-right">
-                    <img src="/public/assets/taycanImage.png" alt="Taycan Turbo S" class="car-image">
-                    <div class="dots">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
+                <!-- SWIPER SLIDER  -->
+                <swiper :modules="[Pagination]" :pagination="{ clickable: true }" :loop="false"
+                    @slideChange="onSlideChange" class="car-slider">
+                    <swiper-slide v-for="(car, index) in cars" :key="car.id">
+                        <div class="car-item">
+                            <img v-bind:src="car.lineLeft" alt="line-left" class="line-left">
+                            <img v-bind:src="car.modelLogo" :alt="car.name + ' Model logo'" class="car-model">
+                            <img v-bind:src="car.lineRight" alt="line-right" class="line-right">
+                            <img v-bind:src="car.image" :alt="car.name" class="car-image">
+                        </div>
+                    </swiper-slide>
+                </swiper>
+
+                <div class="mid-container">
+                    <!-- VEHICLE DETAILS BUTTON -->
+                    <IonButton expand="block" fill="outline" class="details-button" @click="goToOverview">
+                        Vehicle Details
+                    </IonButton>
+
+                    <!-- BATTERY STATUS SECTION -->
+                    <div class="battery-status" @click="goToOverview">
+                        <div class="battery-info">
+                            <div class="battery-percentage">
+                                <span class="percentage">72%</span>
+                                <span class="range">553km</span>
+                            </div>
+                            <div class="charging-status">
+                                <img src="/public/assets/imagesMainScreen/ChargingStation.svg" alt="ChargingStation"
+                                    class="battery-icon">
+                                <span class="text-battery">Charging plug not connected</span>
+                            </div>
+                            <div class="charging-progress">
+                                <img src="/public/assets/imagesMainScreen/battery_gradient.svg" alt="battery_gradient">
+                            </div>
+
+                            <div class="status-icons">
+                                <img src="/public/assets/imagesMainScreen/Headlights.svg" alt="Headlights">
+                                <div class="separator"></div>
+                                <img src="/public/assets/imagesMainScreen/key.svg" alt="key" class="key">
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- VEHICLE DETAILS BUTTON -->
-                <IonButton expand="block" fill="outline" class="details-button" @click="goToOverview">
-                    Vehicle Details
-                </IonButton>
+                    <!-- ACTION BUTTONS -->
 
-                <!-- BATTERY STATUS SECTION -->
-                <div class="battery-status" @click="goToOverview">
-                    <div class="battery-info">
-                        <div class="battery-percentage">
-                            <span class="percentage">72%</span>
-                            <span class="range">553km</span>
-                        </div>
-                        <div class="charging-status">
-                            <ion-icon :icon="batteryHalfSharp" class="battery-icon"></ion-icon>
-                            <span>Charging plug not connected</span>
-                        </div>
-                        <div class="status-icons">
-                            <ion-icon :icon="flashlightOutline"></ion-icon>
-                            
-                            <ion-icon :icon="searchOutline"></ion-icon>
-                        </div>
+                    <div class="action-buttons">
+                        <ion-button fill="clear" class="action-button">
+                            <div class="button-content">
+                                <img src="/public/assets/imagesMainScreen/ChargingStation.svg" alt="ChargingStation">
+                                <span>STATIONS</span>
+                            </div>
+                        </ion-button>
+                        <ion-button fill="clear" class="action-button">
+                            <div class="button-content">
+                                <img src="/public/assets/imagesMainScreen/ChartLine.svg" alt="ChartLine">
+                                <span>STATS</span>
+                            </div>
+                        </ion-button>
+                        <ion-button fill="clear" class="action-button">
+                            <div class="button-content">
+                                <img src="/public/assets/imagesMainScreen/Engine.svg" alt="Engine">
+                                <span>OBD</span>
+                            </div>
+                        </ion-button>
                     </div>
-                </div>
-
-                <!-- ACTION BUTTONS -->
-
-                <div class="action-buttons">
-                    <ion-button fill="clear" class="action-button">
-                        <div class="button-content">
-                            <ion-icon :icon="locationOutline"></ion-icon>
-                            <span>STATIONS</span>
-                        </div>
-                    </ion-button>
-                    <ion-button fill="clear" class="action-button">
-                        <div class="button-content">
-                            <ion-icon :icon="statsChartOutline"></ion-icon>
-                            <span>STATS</span>
-                        </div>
-                    </ion-button>
-                    <ion-button fill="clear" class="action-button">
-                        <div class="button-content">
-                            <ion-icon :icon="carOutline"></ion-icon>
-                            <span>OBD</span>
-                        </div>
-                    </ion-button>
                 </div>
             </div>
         </IonContent>
@@ -74,45 +82,183 @@ import { useRouter } from 'vue-router';
 import {
     IonButton,
     IonContent,
-    IonHeader,
-    IonIcon,
     IonPage,
     IonText,
 } from '@ionic/vue';
-import {
-    batteryHalfSharp,
-    carOutline,
-    flashlightOutline,
-    locationOutline,
-    searchOutline,
-    statsChartOutline
-} from 'ionicons/icons';
+
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Pagination } from "swiper/modules";
+import { ref } from "vue";
+import 'swiper/css';
+import 'swiper/css/pagination';
+import "swiper/css/effect-fade";
 
 const router = useRouter();
+
+const activeIndex = ref(0); // Slide activo
+
+const onSlideChange = (swiper: any) => {
+    activeIndex.value = swiper.realIndex; // Guarda el índice del slide visible
+};
 
 const goToOverview = () => {
     router.push('/tabs/details');
 };
+
+const getCarTitle = () => {
+    return activeIndex.value === 0 ? "My Taycan Turbo S" : "My 911 GT3 RS";
+};
+
+
+// Lista de coches en el slider
+const cars = [
+    {
+        id: 1,
+        name: "Taycan Turbo S",
+        lineLeft: "/public/assets/imagesMainScreen/taycan/lineLeftTaycan.svg",
+        modelLogo: "/public/assets/imagesMainScreen/taycan/Taycan.svg",
+        lineRight: "/public/assets/imagesMainScreen/taycan/lineRightTaycan.svg",
+        image: "/public/assets/imagesMainScreen/taycan/taycanImage.png",
+    },
+    {
+        id: 2,
+        name: "911 GT3 RS",
+        lineLeft: "/public/assets/imagesMainScreen/gt3/lineLeftGt3.svg",
+        modelLogo: "/public/assets/imagesMainScreen/gt3/911gt3rs.svg",
+        lineRight: "/public/assets/imagesMainScreen/gt3/lineRightGt3.svg",
+        image: "/public/assets/imagesMainScreen/gt3/porschegt3.png",
+    },
+];
 </script>
 
 
 <style scoped>
-.line-left {
+.car-slider {
+    width: 100%;
+    height: 260px;
+    /* Ajusta este valor según lo necesites */
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.car-item {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    /* Asegura que los coches estén alineados por la base */
+    height: 100%;
+}
+
+.taycan-style .car-model {
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    max-width: 80%;
+}
+
+.taycan-style .car-image {
+    max-width: 90%;
+    bottom: 0;
+}
+
+.gt3-style .car-model {
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    max-width: 90%;
+}
+
+.gt3-style .car-image {
+    max-width: 90%;
+    bottom: 0;
+    /* Igual que el Taycan */
+}
+
+/* Ajuste de líneas laterales */
+.line-left,
+.line-right {
     position: absolute;
-    margin-top: 130px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 70px;
+    opacity: 75%;
+}
+
+.line-left {
     left: 10px;
 }
 
 .line-right {
-    position: absolute;
-    margin-top: 130px;
-    right: 10px
+    right: 10px;
 }
 
-.car-model{
+.car-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
     position: absolute;
-    margin-left: 62px;
-    margin-top: 50px;
+    bottom: 0;
+    /* Asegura que ambos coches toquen la base */
+}
+
+.swiper-slide {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.swiper-slide-active {
+    opacity: 1;
+}
+
+/* Personalización de los puntos de paginación */
+/* Personalización de los puntos de paginación */
+:deep(.swiper-pagination-bullet) {
+    background-color: #565656;
+    opacity: 0.7;
+}
+
+:deep(.swiper-pagination-bullet-active) {
+    background-color: #FC0;
+    opacity: 1;
+}
+
+
+.key {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.separator {
+    width: 1.5px;
+    /* Grosor de la línea */
+    height: 24px;
+    /* Alto de la línea */
+    background: rgba(0, 0, 0, 0.60);
+    margin: 0 12px;
+    /* Espacio a los lados para que no esté pegada */
+}
+
+
+.text-battery {
+    font-size: 15px;
+}
+
+.mid-container {
+    margin-top: 40px;
+}
+
+
+.car-model {
+    position: absolute;
+    top: 31%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: -1;
 }
 
@@ -121,7 +267,7 @@ const goToOverview = () => {
     padding: 8px 16px;
     margin-left: 20px;
     margin-top: 30px;
-    color: #666;
+    color: #444444;
     font-size: 14px;
 }
 
@@ -130,15 +276,15 @@ const goToOverview = () => {
 }
 
 .car-title {
-    font-size: 24px;
-    font-weight:    bold;
+    font-size: 30px;
+    font-weight: bold;
     margin-top: 1px;
     margin-left: 20px;
 }
 
 .car-slider {
     position: relative;
-    margin-bottom: 20px;
+    bottom: 2%;
 }
 
 .car-image {
@@ -220,17 +366,23 @@ const goToOverview = () => {
 
 .action-buttons {
     display: flex;
-    justify-content: space-between; /* Distribuye los botones uniformemente */
-    gap: 8px; /* Espacio entre botones */
+    justify-content: space-between;
+    /* Distribuye los botones uniformemente */
+    gap: 8px;
+    /* Espacio entre botones */
     margin-top: 16px;
-    width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
-    max-width: 400px; /* Ajusta este valor según el tamaño del contenedor de batería */
+    width: 100%;
+    /* Asegura que ocupe todo el ancho del contenedor */
+    max-width: 400px;
+    /* Ajusta este valor según el tamaño del contenedor de batería */
     margin-left: auto;
-    margin-right: auto; /* Centra los botones */
+    margin-right: auto;
+    /* Centra los botones */
 }
 
 .action-button {
-    flex: 1; /* Hace que los botones ocupen el mismo ancho */
+    flex: 1;
+    /* Hace que los botones ocupen el mismo ancho */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -242,8 +394,10 @@ const goToOverview = () => {
     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.2s ease-in-out;
     text-align: center;
-    max-width: 120px; /* Limita el ancho máximo */
-    min-width: 100px; /* Evita que sean demasiado pequeños */
+    max-width: 120px;
+    /* Limita el ancho máximo */
+    min-width: 100px;
+    /* Evita que sean demasiado pequeños */
 }
 
 .button-content {
