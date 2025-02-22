@@ -1,31 +1,26 @@
 <template>
-    <IonPage>
-        <IonContent>
-            <IonText class="last-updated">Last updated: 5 minutes ago</IonText>
+    <ion-page>
+        <ion-content>
+            <ion-text class="last-updated">Last updated: 5 minutes ago</ion-text>
             <div class="car-container">
-                <h1 class="car-title">
-                    {{ getCarTitle() }}
-                </h1>
-                <!-- SWIPER SLIDER  -->
+                <h1 class="car-title">{{ getCarTitle() }}</h1>
                 <swiper :modules="[Pagination]" :pagination="{ clickable: true }" :loop="false"
                     @slideChange="onSlideChange" class="car-slider">
-                    <swiper-slide v-for="(car, index) in cars" :key="car.id">
+                    <swiper-slide v-for="car in cars" :key="car.id">
                         <div class="car-item">
-                            <img v-bind:src="car.lineLeft" alt="line-left" class="line-left">
-                            <img v-bind:src="car.modelLogo" :alt="car.name + ' Model logo'" class="car-model">
-                            <img v-bind:src="car.lineRight" alt="line-right" class="line-right">
-                            <img v-bind:src="car.image" :alt="car.name" class="car-image">
+                            <img :src="car.lineLeft" alt="line-left" class="line-left">
+                            <img :src="car.modelLogo" :alt="`${car.name} Model logo`" class="car-model">
+                            <img :src="car.lineRight" alt="line-right" class="line-right">
+                            <img :src="car.image" :alt="car.name" class="car-image">
                         </div>
                     </swiper-slide>
                 </swiper>
 
                 <div class="mid-container">
-                    <!-- VEHICLE DETAILS BUTTON -->
-                    <IonButton expand="block" fill="outline" class="details-button" @click="goToOverview">
+                    <ion-button expand="block" fill="outline" class="details-button" @click="goToOverview">
                         Vehicle Details
-                    </IonButton>
+                    </ion-button>
 
-                    <!-- BATTERY STATUS SECTION -->
                     <div class="battery-status" @click="goToOverview">
                         <div class="battery-info">
                             <div class="battery-percentage">
@@ -40,7 +35,6 @@
                             <div class="charging-progress">
                                 <img src="/assets/imagesMainScreen/battery_gradient.svg" alt="battery_gradient">
                             </div>
-
                             <div class="status-icons">
                                 <img src="/assets/imagesMainScreen/Headlights.svg" alt="Headlights">
                                 <div class="separator"></div>
@@ -49,56 +43,34 @@
                         </div>
                     </div>
 
-                    <!-- ACTION BUTTONS -->
-
                     <div class="action-buttons">
-                        <ion-button fill="clear" class="action-button">
+                        <ion-button v-for="action in actions" :key="action.name" fill="clear" class="action-button">
                             <div class="button-content">
-                                <img src="/assets/imagesMainScreen/ChargingStation.svg" alt="ChargingStation">
-                                <span>STATIONS</span>
-                            </div>
-                        </ion-button>
-                        <ion-button fill="clear" class="action-button">
-                            <div class="button-content">
-                                <img src="/assets/imagesMainScreen/ChartLine.svg" alt="ChartLine">
-                                <span>STATS</span>
-                            </div>
-                        </ion-button>
-                        <ion-button fill="clear" class="action-button">
-                            <div class="button-content">
-                                <img src="/assets/imagesMainScreen/Engine.svg" alt="Engine">
-                                <span>OBD</span>
+                                <img :src="action.icon" :alt="action.name">
+                                <span>{{ action.name }}</span>
                             </div>
                         </ion-button>
                     </div>
                 </div>
             </div>
-        </IonContent>
-    </IonPage>
+        </ion-content>
+    </ion-page>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import {
-    IonButton,
-    IonContent,
-    IonPage,
-    IonText,
-} from '@ionic/vue';
-
+import { IonButton, IonContent, IonPage, IonText } from '@ionic/vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Pagination } from "swiper/modules";
 import { ref } from "vue";
 import 'swiper/css';
 import 'swiper/css/pagination';
-import "swiper/css/effect-fade";
 
 const router = useRouter();
-
-const activeIndex = ref(0); // Slide activo
+const activeIndex = ref(0);
 
 const onSlideChange = (swiper: any) => {
-    activeIndex.value = swiper.realIndex; // Guarda el índice del slide visible
+    activeIndex.value = swiper.realIndex;
 };
 
 const goToOverview = () => {
@@ -109,8 +81,6 @@ const getCarTitle = () => {
     return activeIndex.value === 0 ? "My Taycan Turbo S" : "My 911 GT3 RS";
 };
 
-
-// Lista de coches en el slider
 const cars = [
     {
         id: 1,
@@ -129,14 +99,18 @@ const cars = [
         image: "/assets/imagesMainScreen/gt3/porschegt3.png",
     },
 ];
-</script>
 
+const actions = [
+    { name: "STATIONS", icon: "/assets/imagesMainScreen/ChargingStation.svg" },
+    { name: "STATS", icon: "/assets/imagesMainScreen/ChartLine.svg" },
+    { name: "OBD", icon: "/assets/imagesMainScreen/Engine.svg" },
+];
+</script>
 
 <style scoped>
 .car-slider {
     width: 100%;
     height: 260px;
-    /* Ajusta este valor según lo necesites */
     overflow: hidden;
     position: relative;
     margin-bottom: 20px;
@@ -146,11 +120,11 @@ const cars = [
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    /* Asegura que los coches estén alineados por la base */
     height: 100%;
 }
 
-.taycan-style .car-model {
+.car-model {
+    position: absolute;
     top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -158,26 +132,12 @@ const cars = [
     max-width: 80%;
 }
 
-.taycan-style .car-image {
+.car-image {
     max-width: 90%;
+    position: absolute;
     bottom: 0;
 }
 
-.gt3-style .car-model {
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: -1;
-    max-width: 90%;
-}
-
-.gt3-style .car-image {
-    max-width: 90%;
-    bottom: 0;
-    /* Igual que el Taycan */
-}
-
-/* Ajuste de líneas laterales */
 .line-left,
 .line-right {
     position: absolute;
@@ -195,28 +155,6 @@ const cars = [
     right: 10px;
 }
 
-.car-image {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
-    position: absolute;
-    bottom: 0;
-    /* Asegura que ambos coches toquen la base */
-}
-
-.swiper-slide {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.swiper-slide-active {
-    opacity: 1;
-}
-
-/* Personalización de los puntos de paginación */
-/* Personalización de los puntos de paginación */
 :deep(.swiper-pagination-bullet) {
     background-color: #565656;
     opacity: 0.7;
@@ -227,7 +165,6 @@ const cars = [
     opacity: 1;
 }
 
-
 .key {
     width: 24px;
     height: 24px;
@@ -236,14 +173,10 @@ const cars = [
 
 .separator {
     width: 1.5px;
-    /* Grosor de la línea */
     height: 24px;
-    /* Alto de la línea */
     background: rgba(0, 0, 0, 0.60);
     margin: 0 12px;
-    /* Espacio a los lados para que no esté pegada */
 }
-
 
 .text-battery {
     font-size: 15px;
@@ -251,15 +184,6 @@ const cars = [
 
 .mid-container {
     margin-top: 40px;
-}
-
-
-.car-model {
-    position: absolute;
-    top: 31%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: -1;
 }
 
 .last-updated {
@@ -282,44 +206,15 @@ const cars = [
     margin-left: 20px;
 }
 
-.car-slider {
-    position: relative;
-    bottom: 2%;
-}
-
-.car-image {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-}
-
-.dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 12px;
-}
-
-.dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #ccc;
-}
-
-.dot.active {
-    background-color: #F28100;
-}
-
 .details-button {
     --border-radius: 8px;
     --border-color: #444;
-    --color: black;
-    font-size: 18px;
+    --color: #1E1E1E;
+    font-size: 20px;
     margin: 16px 0;
     text-transform: none;
     font-family: 'Inter', sans-serif;
-    font-weight: 400;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
 }
 
 .battery-status {
@@ -327,6 +222,7 @@ const cars = [
     border-radius: 8px;
     padding: 16px;
     margin: 16px 0;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
 }
 
 .battery-info {
@@ -367,22 +263,17 @@ const cars = [
 .action-buttons {
     display: flex;
     justify-content: space-between;
-    /* Distribuye los botones uniformemente */
     gap: 8px;
-    /* Espacio entre botones */
     margin-top: 16px;
     width: 100%;
-    /* Asegura que ocupe todo el ancho del contenedor */
     max-width: 400px;
-    /* Ajusta este valor según el tamaño del contenedor de batería */
     margin-left: auto;
     margin-right: auto;
-    /* Centra los botones */
+    margin-bottom: 30px;
 }
 
 .action-button {
     flex: 1;
-    /* Hace que los botones ocupen el mismo ancho */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -390,40 +281,25 @@ const cars = [
     background: white;
     border: 2px solid #444444;
     border-radius: 12px;
-    padding: 9px;
-    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+    padding: 2px;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
     transition: all 0.2s ease-in-out;
     text-align: center;
     max-width: 120px;
-    /* Limita el ancho máximo */
     min-width: 100px;
-    /* Evita que sean demasiado pequeños */
 }
 
 .button-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-weight: bold;
     color: #444444;
+    font-size: 13px;
+    font-weight: bolder;
+    gap: 12px;
 }
 
-ion-icon {
-    font-size: 24px;
-    color: #1E1E1E;
-}
-
-ion-tab-bar {
-    --background: white;
-    border-top: 1px solid #eee;
-}
-
-ion-tab-button {
-    --color: #666;
-    --color-selected: #F28100;
-}
-
-ion-content {
+:deep(ion-content) {
     --background: white;
     --color: #1E1E1E;
     font-family: 'Inter', sans-serif;
