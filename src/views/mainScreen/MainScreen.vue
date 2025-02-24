@@ -38,7 +38,7 @@
                             <div class="status-icons">
                                 <img src="/assets/imagesMainScreen/Headlights.svg" alt="Headlights">
                                 <div class="separator"></div>
-                                <div class="key-wrapper" @click="goToFunctions">
+                                <div class="key-wrapper" @click.stop="goToFunctions">
                                     <img src="/assets/imagesMainScreen/key.svg" alt="key" class="key" />
                                 </div>
                             </div>
@@ -128,7 +128,7 @@ const handleAction = (action: { name: string, icon: string }) => {
 };
 
 const goToFunctions = () => {
-    // Fusionamos los parámetros actuales con el nuevo valor de 'tab'
+    // Obtenemos la ruta y query actuales
     router.replace({
         path: '/tabs/details',
         query: { ...route.query, tab: 'functions', _force: Date.now() }
