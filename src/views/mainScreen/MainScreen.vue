@@ -44,7 +44,8 @@
                     </div>
 
                     <div class="action-buttons">
-                        <ion-button v-for="action in actions" :key="action.name" fill="clear" class="action-button">
+                        <ion-button v-for="action in actions" :key="action.name" fill="clear" class="action-button"
+                            @click="handleAction(action)">
                             <div class="button-content">
                                 <img :src="action.icon" :alt="action.name">
                                 <span>{{ action.name }}</span>
@@ -105,6 +106,24 @@ const actions = [
     { name: "STATS", icon: "/assets/imagesMainScreen/ChartLine.svg" },
     { name: "OBD", icon: "/assets/imagesMainScreen/Engine.svg" },
 ];
+
+const handleAction = (action: { name: string, icon: string }) => {
+    switch (action.name) {
+        case "STATIONS":
+            router.push('/tabs/maps');
+            break;
+        case "STATS":
+            router.push('/stats');
+            break;
+        case "OBD":
+            router.push({ path: '/tabs/details', query: { tab: 'repair' } });
+
+            break;
+        default:
+            console.warn("Accion no reconocida.");
+    }
+}
+
 </script>
 
 <style scoped>

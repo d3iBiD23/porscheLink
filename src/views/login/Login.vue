@@ -24,7 +24,7 @@
                     Forgot your password?
                 </ion-text>
 
-                <ion-button expand="block" type="submit" class="login-button" @click="goToMainScreen">
+                <ion-button expand="block" class="login-button" @click="goToMainScreen">
                     Login
                 </ion-button>
             </form>
@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { ref } from 'vue'
-import { IonPage, IonLabel, IonInput, IonButton, IonText, IonIcon } from '@ionic/vue'
+import { IonPage, IonLabel, IonInput, IonButton, IonText } from '@ionic/vue'
 
 const email = ref('')
 const password = ref('')

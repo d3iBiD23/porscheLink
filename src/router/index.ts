@@ -4,6 +4,10 @@ import TabsPage from "../views/TabsPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
+    path: '/:catchAll(.*)*',
+    redirect: '/login'
+  },
+  {
     path: "/",
     redirect: "/login",
   },
@@ -21,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/login/forgotPwd",
     name: "forgotPwd",
     component: () => import("@/views/login/ForgotP.vue"),
+  },
+  {
+    path: "/stats",
+    name: "stats",
+    component: () => import("@/views/stats/MainStats.vue"),
   },
   {
     path: "/tabs/",
@@ -45,14 +54,6 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "help",
         component: () => import("@/views/mainHelp/HelpPage.vue"),
-      },
-      {
-        path: "repair",
-        component: () => import("@/views/vehicleDetails/Repair.vue"),
-      },
-      {
-        path: "functions",
-        component: () => import("@/views/vehicleDetails/Functions.vue"),
       },
       {
         path: "maps",

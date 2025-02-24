@@ -11,13 +11,8 @@
       </IonToolbar>
       <IonToolbar>
         <div class="custom-segment">
-          <div 
-            v-for="tab in tabs" 
-            :key="tab.value"
-            class="segment-button"
-            :class="{ active: selectedTab === tab.value }"
-            @click="selectedTab = tab.value"
-          >
+          <div v-for="tab in tabs" :key="tab.value" class="segment-button"
+            :class="{ active: selectedTab === tab.value }" @click="selectedTab = tab.value">
             <ion-icon :icon="tab.icon" />
             <span>{{ tab.label }}</span>
           </div>
@@ -42,19 +37,23 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage } from '@ionic/vue';
-import { eye, construct, settings, eyeOutline, constructOutline, settingsOutline, keyOutline } from 'ionicons/icons';
+import { eyeOutline, constructOutline, keyOutline } from 'ionicons/icons';
 import DetailsContent from '@/components/DetailsContent.vue';
 import RepairContent from '@/components/RepairContent.vue';
 import FunctionsContent from '@/components/FunctionsContent.vue';
 
-const selectedTab = ref('details');
+const route = useRoute();
+
+const selectedTab = ref(route.query.tab ? route.query.tab : 'details');
 
 const tabs = [
   { label: 'Details', value: 'details', icon: eyeOutline },
   { label: 'Repair', value: 'repair', icon: constructOutline },
   { label: 'Functions', value: 'functions', icon: keyOutline }
 ];
+
 </script>
 
 <style scoped>
