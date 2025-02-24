@@ -95,6 +95,7 @@ ion-toolbar {
   padding: 8px 16px;
   cursor: pointer;
   color: #666;
+  font-weight: 600; 
 }
 
 .segment-button.active {

@@ -6,7 +6,7 @@
             </ion-toolbar>
         </ion-header>
         <ion-content :fullscreen="true">
-
+            <img src="/assets/map_image.svg" alt="map_image">
         </ion-content>
     </ion-page>
 </template>

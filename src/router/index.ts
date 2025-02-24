@@ -4,8 +4,8 @@ import TabsPage from "../views/TabsPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/:catchAll(.*)*',
-    redirect: '/login'
+    path: "/:catchAll(.*)*",
+    redirect: "/login",
   },
   {
     path: "/",
@@ -27,9 +27,8 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/login/ForgotP.vue"),
   },
   {
-    path: "/stats",
-    name: "stats",
-    component: () => import("@/views/stats/MainStats.vue"),
+    path: "/maps",
+    component: () => import("@/views/map/MapsView.vue"),
   },
   {
     path: "/tabs/",
@@ -56,8 +55,9 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/mainHelp/HelpPage.vue"),
       },
       {
-        path: "maps",
-        component: () => import("@/views/map/MapsView.vue"),
+        path: "/stats",
+        name: "stats",
+        component: () => import("@/views/stats/MainStats.vue"),
       },
     ],
   },

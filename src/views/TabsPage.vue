@@ -9,7 +9,7 @@
             <ion-icon :icon="personOutline" />
             <ion-label>Account</ion-label>
           </ion-tab-button>
-          <ion-tab-button tab="maps" href="/tabs/maps">
+          <ion-tab-button tab="maps" href="/maps">
             <ion-icon :icon="mapOutline" />
             <ion-label>Map</ion-label>
           </ion-tab-button>
@@ -54,4 +54,5 @@ ion-tab-bar {
 ion-tab-button {
   color: black;
 }
+
 </style>

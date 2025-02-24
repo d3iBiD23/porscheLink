@@ -38,7 +38,9 @@
                             <div class="status-icons">
                                 <img src="/assets/imagesMainScreen/Headlights.svg" alt="Headlights">
                                 <div class="separator"></div>
-                                <img src="/assets/imagesMainScreen/key.svg" alt="key" class="key">
+                                <div class="key-wrapper">
+                                    <img src="/assets/imagesMainScreen/key.svg" alt="key" class="key" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -117,7 +119,6 @@ const handleAction = (action: { name: string, icon: string }) => {
             break;
         case "OBD":
             router.push({ path: '/tabs/details', query: { tab: 'repair' } });
-
             break;
         default:
             console.warn("Accion no reconocida.");
@@ -182,6 +183,18 @@ const handleAction = (action: { name: string, icon: string }) => {
 :deep(.swiper-pagination-bullet-active) {
     background-color: #FC0;
     opacity: 1;
+}
+
+.key-wrapper {
+    /* Para que sea un bloque/inline-block con padding */
+    display: inline-flex;
+    /* o inline-block */
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    /* Aumenta según necesites la zona clicable */
+    cursor: pointer;
+    /* Indica que se puede hacer clic */
 }
 
 .key {

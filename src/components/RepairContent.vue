@@ -1,5 +1,9 @@
 <template>
     <div class="details-content">
+        <!-- Car Image Section -->
+        <div class="car-image-section mb-8">
+            <img src="/assets/imagesMainScreen/taycan/taycanImage.png" alt="Porsche Taycan" class="taycanImage" />
+        </div>
         <div class="info-section">
             <h2>REPAIR CONTENT</h2>
         </div>
@@ -7,8 +11,14 @@
 </template>
 
 <style scoped>
+.taycanImage {
+    position: relative;
+    margin-top: -100px;
+    margin-left: 100px;
+}
 
-h2, p {
+h2,
+p {
     color: black;
 }
 
