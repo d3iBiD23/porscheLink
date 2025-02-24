@@ -12,10 +12,11 @@
       <IonToolbar>
         <div class="custom-segment">
           <div v-for="tab in tabs" :key="tab.value" class="segment-button"
-            :class="{ active: selectedTab === tab.value }" @click="selectedTab = tab.value">
+            :class="{ active: selectedTab === tab.value }" @click="updateTab(tab.value)">
             <ion-icon :icon="tab.icon" />
             <span>{{ tab.label }}</span>
           </div>
+
         </div>
       </IonToolbar>
     </IonHeader>
@@ -37,22 +38,30 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage } from '@ionic/vue';
-import { eyeOutline, constructOutline, keyOutline } from 'ionicons/icons';
+import { eye, construct, settings, eyeOutline, constructOutline, settingsOutline, keyOutline } from 'ionicons/icons';
 import DetailsContent from '@/components/DetailsContent.vue';
 import RepairContent from '@/components/RepairContent.vue';
 import FunctionsContent from '@/components/FunctionsContent.vue';
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
-
-const selectedTab = ref(route.query.tab ? route.query.tab : 'details');
+const router = useRouter();
+const selectedTab = computed(() => route.query.tab || 'details');
 
 const tabs = [
   { label: 'Details', value: 'details', icon: eyeOutline },
   { label: 'Repair', value: 'repair', icon: constructOutline },
   { label: 'Functions', value: 'functions', icon: keyOutline }
 ];
+
+const updateTab = (newTab: string) => {
+  router.replace({
+    path: '/tabs/details',
+    query: { ...route.query, tab: newTab, _force: Date.now() }
+  });
+};
 
 </script>
 
@@ -95,7 +104,6 @@ ion-toolbar {
   padding: 8px 16px;
   cursor: pointer;
   color: #666;
-  font-weight: 600; 
 }
 
 .segment-button.active {

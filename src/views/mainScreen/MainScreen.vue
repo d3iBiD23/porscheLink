@@ -38,7 +38,7 @@
                             <div class="status-icons">
                                 <img src="/assets/imagesMainScreen/Headlights.svg" alt="Headlights">
                                 <div class="separator"></div>
-                                <div class="key-wrapper">
+                                <div class="key-wrapper" @click="goToFunctions">
                                     <img src="/assets/imagesMainScreen/key.svg" alt="key" class="key" />
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { IonButton, IonContent, IonPage, IonText } from '@ionic/vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Pagination } from "swiper/modules";
@@ -70,6 +70,8 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 const router = useRouter();
+const route = useRoute();
+
 const activeIndex = ref(0);
 
 const onSlideChange = (swiper: any) => {
@@ -123,7 +125,15 @@ const handleAction = (action: { name: string, icon: string }) => {
         default:
             console.warn("Accion no reconocida.");
     }
-}
+};
+
+const goToFunctions = () => {
+    // Fusionamos los parámetros actuales con el nuevo valor de 'tab'
+    router.replace({
+        path: '/tabs/details',
+        query: { ...route.query, tab: 'functions', _force: Date.now() }
+    });
+};
 
 </script>
 
