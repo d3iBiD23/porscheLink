@@ -5,7 +5,7 @@
       <ion-tab-bar slot="bottom">
 
         <template v-if="onMainScreen">
-          <ion-tab-button tab="accountpage" href="/tabs/accountpage">
+          <ion-tab-button tab="accountpage" href="/account">
             <ion-icon :icon="personOutline" />
             <ion-label>Account</ion-label>
           </ion-tab-button>

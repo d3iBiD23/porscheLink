@@ -31,6 +31,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/map/MapsView.vue"),
   },
   {
+    path: "/account",
+    component: () => import("@/views/account/AccountPage.vue"),
+  }, 
+  {
     path: "/tabs/",
     component: TabsPage,
     children: [

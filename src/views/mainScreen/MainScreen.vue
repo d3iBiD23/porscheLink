@@ -36,7 +36,8 @@
                                 <img src="/assets/imagesMainScreen/battery_gradient.svg" alt="battery_gradient">
                             </div>
                             <div class="status-icons">
-                                <img src="/assets/imagesMainScreen/Headlights.svg" alt="Headlights">
+                                <img src="/assets/imagesMainScreen/Headlights.svg" alt="Headlights"
+                                    @click.stop="goToFunctions">
                                 <div class="separator"></div>
                                 <div class="key-wrapper" @click.stop="goToFunctions">
                                     <img src="/assets/imagesMainScreen/key.svg" alt="key" class="key" />
