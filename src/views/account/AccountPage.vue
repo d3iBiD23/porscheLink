@@ -12,18 +12,23 @@
             <img src="/assets/user_avatar.svg" alt="Avatar" />
           </ion-avatar>
           <h2>John Doe</h2>
+
         </div>
       </div>
+      <div class="divider"></div>
 
       <!-- Sección principal de opciones de cuenta -->
       <ion-list class="menu-options">
         <ion-item>
+          <img src="/assets/UserCircle.svg" alt="UserCircle" class="userCircle">
           <ion-label>My Account</ion-label>
         </ion-item>
         <ion-item>
+          <img src="/public/assets/EnvelopeSimple.svg" alt="EnvelopeSimple" class="envelopeSimple">
           <ion-label>Notifications</ion-label>
         </ion-item>
         <ion-item>
+          <img src="/public/assets/Question.svg" alt="Question" class="question">
           <ion-label>Contact And Help</ion-label>
         </ion-item>
       </ion-list>
@@ -75,6 +80,12 @@ ion-content {
   --color: #000000;
 }
 
+.question,
+.envelopeSimple,
+.userCircle {
+  padding: 0.5rem;
+}
+
 /* Ajustes del header y del botón de regreso */
 .header {
   position: relative;
@@ -89,8 +100,7 @@ ion-content {
 .back-button {
   position: absolute;
   left: 1rem;
-  top: 1rem;
-  /* Ajusta si necesitas que el botón baje más */
+  margin-top: 110px;
 }
 
 :deep(ion-back-button) {
@@ -121,14 +131,21 @@ ion-content {
 .menu-options,
 .legal-options {
   background-color: white;
-  margin: 0 1rem;
+  margin: 1rem 1rem;
+}
+
+.legal-options {
+  margin: 0 1.5rem;
 }
 
 ion-item {
   --background: transparent;
-  --color: #000;
-  border-bottom: 1px solid #f0f0f0;
+  --border-width: 0;
+  --border-color: transparent;
+  border: none;
+  color: #444444;
 }
+
 
 /* Último item sin borde inferior (opcional) */
 ion-item:last-child {
@@ -151,12 +168,9 @@ ion-item:last-child {
 
 /* Línea divisoria gris detrás del coche */
 .divider {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
+  position: relative;
   height: 2px;
-  background-color: #999999;
+  background: rgba(0, 0, 0, 0.60);
   z-index: -1;
 }
 
