@@ -117,7 +117,7 @@ const actions = [
 const handleAction = (action: { name: string, icon: string }) => {
     switch (action.name) {
         case "STATIONS":
-            router.push('/tabs/maps');
+            router.push('/maps');
             break;
         case "STATS":
             router.push('/stats');

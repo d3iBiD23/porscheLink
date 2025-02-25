@@ -24,11 +24,11 @@
           <ion-label>My Account</ion-label>
         </ion-item>
         <ion-item>
-          <img src="/public/assets/EnvelopeSimple.svg" alt="EnvelopeSimple" class="envelopeSimple">
+          <img src="/assets/EnvelopeSimple.svg" alt="EnvelopeSimple" class="envelopeSimple">
           <ion-label>Notifications</ion-label>
         </ion-item>
         <ion-item>
-          <img src="/public/assets/Question.svg" alt="Question" class="question">
+          <img src="/assets/Question.svg" alt="Question" class="question">
           <ion-label>Contact And Help</ion-label>
         </ion-item>
       </ion-list>

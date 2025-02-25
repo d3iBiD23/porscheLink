@@ -1,11 +1,16 @@
 <template>
     <ion-page>
+        <div class="status-bar">
+            <span class="time">16:38</span>
+            <ion-icon :icon="wifiOutline" class="wifi-icon"></ion-icon>
+        </div>
+
         <ion-content :fullscreen="true">
             <div class="header">
-                <img src="/assets/logos/porscheLogo.svg" alt="Porsche" class="logo">
-                <ion-buttons slot="start" class="back-button">
+                <ion-buttons class="back-button">
                     <ion-back-button default-href="/tabs/homepage" text=""></ion-back-button>
                 </ion-buttons>
+                <img src="/assets/logos/porscheLogo.svg" alt="Porsche" class="logo">
             </div>
 
             <div class="car-container">
@@ -29,15 +34,20 @@
                         <p>Your driving style needs to improve!</p>
                     </div>
                     <div class="circle-progress">
-                        <svg width="80" height="80" viewBox="0 0 80 80">
-                            <circle cx="40" cy="40" r="35" class="circle-bg" />
-                            <circle cx="40" cy="40" r="35" class="circle-value" />
-                            <text x="40" y="40" class="circle-text">58%</text>
+                        <svg viewBox="0 0 36 36" class="circular-chart">
+                            <path d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#DDDDDD" stroke-width="4" />
+                            <path d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#00FF2F" stroke-width="4"
+                                :stroke-dasharray="`${58}, 100`" />
+                            <text x="18" y="20.35" class="percentage">58%</text>
                         </svg>
                     </div>
                 </div>
 
-                <div class="divider_driving"></div>
+                <div class="divider-line"></div>
 
                 <div class="section">
                     <div class="section-text">
@@ -48,6 +58,8 @@
                         <canvas ref="brakingChart"></canvas>
                     </div>
                 </div>
+
+                <div class="divider-line"></div>
 
                 <div class="section">
                     <div class="section-text">
@@ -88,7 +100,7 @@ import {
     IonLabel,
     IonIcon
 } from '@ionic/vue';
-import { chevronForward, person, home, helpCircle } from 'ionicons/icons';
+import { chevronForward, person, home, helpCircle, wifiOutline } from 'ionicons/icons';
 import Chart from 'chart.js/auto';
 
 const brakingChart = ref<HTMLCanvasElement | null>(null);
@@ -100,32 +112,26 @@ onMounted(() => {
             data: {
                 labels: Array.from({ length: 20 }, (_, i) => i + 1),
                 datasets: [{
-                    data: [70, 75, 72, 78, 74, 70, 68, 65, 62, 60, 58, 55, 52, 48, 45, 42, 38, 35, 32, 30],
-                    borderColor: '#ff9f1c',
-                    borderWidth: 2,
+                    data: [80, 85, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20],
+                    borderColor: (context) => {
+                        const value = context.raw;
+                        if (value > 70) return '#00FF2F';
+                        if (value > 40) return '#F28100';
+                        return '#FF0000';
+                    },
                     tension: 0.4,
-                    fill: false,
-                    pointRadius: 0
+                    borderWidth: 2.5,
+                    pointRadius: 0,
                 }]
             },
             options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { display: false },
+                    y: { display: false, min: 0, max: 100 }
+                },
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    x: {
-                        display: false
-                    },
-                    y: {
-                        display: false,
-                        min: 0,
-                        max: 100
-                    }
-                }
             }
         });
     }
@@ -134,71 +140,92 @@ onMounted(() => {
 
 <style scoped>
 ion-content {
-    --background: white;
-    --color: black;
+    --background: #ffffff;
+    --color: #000000;
 }
 
-ion-toolbar {
+.status-bar {
+    height: 44px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    font-weight: 500;
+}
+
+.time {
+    font-size: 16px;
+}
+
+.wifi-icon {
+    font-size: 18px;
+}
+
+ion-content {
     --background: white;
-    --color: black;
+    --padding-top: 0;
 }
 
 .header {
-    position: relative;
-    padding: 1rem;
+    padding: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .logo {
-    position: absolute;
-    margin-top: 90px;
-    height: 0.9rem;
+    height: 12px;
+    margin-top: 16px;
 }
 
 .back-button {
     position: absolute;
-    left: 1rem;
-    margin-top: 270px;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+ion-back-button {
+    --color: black;
+    --icon-font-size: 24px;
+    --padding-start: 0;
 }
 
 .car-container {
     position: relative;
-    padding: 1rem;
-    margin-bottom: 1rem;
+    padding: 0 16px;
+    margin: 32px 0;
 }
 
 .car-image {
-    position: relative;
     width: 100%;
     height: auto;
-    object-fit: contain;
 }
 
 .divider {
     position: absolute;
-    top: 54%;
+    bottom: 25%;
     left: 0;
     right: 0;
-    height: 2px;
+    height: 1px;
     background-color: #999999;
-    z-index: -1;
 }
 
 .content {
-    padding: 0 1rem;
+    padding: 0 16px;
 }
 
 .title-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 32px;
 }
 
 .title-row h1 {
-    font-size: 24px;
+    font-size: 32px;
     font-weight: 600;
     margin: 0;
 }
@@ -206,95 +233,78 @@ ion-toolbar {
 .date-selector {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    color: #666;
+    gap: 8px;
+    color: #444444;
+    font-size: 16px;
 }
 
 .chevron {
-    color: #666;
-    font-size: 1.2rem;
+    color: #F28100;
+    font-size: 20px;
 }
 
 .section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 1rem;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-}
-
-.section:last-child {
-    border-bottom: none;
+    padding: 24px 0;
 }
 
 .section-text h2 {
-    font-size: 18px;
-    font-weight: 500;
-    margin: 0 0 0.5rem;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: #1E1E1E;
 }
 
 .section-text p {
-    color: #666;
+    color: #999999;
     margin: 0;
-    font-size: 14px;
+    font-size: 16px;
 }
 
-.circle-progress {
+.divider-line {
+    height: 1px;
+    background-color: #AEAEAE;
+}
+
+.circular-chart {
     width: 80px;
     height: 80px;
-}
-
-.circle-bg {
-    fill: none;
-    stroke: #e0e0e0;
-    stroke-width: 8;
-}
-
-.circle-value {
-    fill: none;
-    stroke: #2ecc71;
-    stroke-width: 8;
-    stroke-dasharray: 219.91;
-    stroke-dashoffset: 92.36;
-    /* (1 - 0.58) * 219.91 */
     transform: rotate(-90deg);
-    transform-origin: center;
 }
 
-.circle-text {
-    fill: #000;
-    font-size: 16px;
-    font-weight: 500;
+.circular-chart .percentage {
+    fill: #1E1E1E;
+    font-size: 0.6em;
+    font-weight: 600;
     text-anchor: middle;
-    dominant-baseline: middle;
+    transform: rotate(90deg) translate(0, -0.35em);
 }
 
 .graph-container {
-    width: 120px;
-    height: 60px;
+    width: 200px;
+    height: 80px;
 }
 
-:deep(ion-tab-bar) {
-    border-top: 1px solid #e0e0e0;
+ion-tab-bar {
+    --background: white;
+    height: 83px;
+    padding-bottom: 20px;
 }
 
-:deep(ion-tab-button) {
-    --color: #666;
-    --color-selected: #000;
+ion-tab-button {
+    --color: #444444;
+    --color-selected: #1E1E1E;
 }
 
-:deep(ion-back-button) {
-    --color: #000;
-    margin: 0;
+ion-tab-button ion-icon {
+    font-size: 24px;
+    margin-bottom: 4px;
 }
 
-.divider_driving {
-    position: relative;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background-color: #999999;
-    z-index: -1;
+ion-tab-button ion-label {
+    font-size: 12px;
+    font-weight: 500;
 }
 </style>
