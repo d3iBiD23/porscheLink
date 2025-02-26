@@ -95,14 +95,14 @@ import { batteryHalfOutline } from 'ionicons/icons';
 .mileage-row h2 {
     font-size: 20px;
     font-weight: bolder;
-    color: #1E1E1E;
+    color: #444444;
     margin: 0;
 }
 
 .mileage-row p {
     font-size: 20px;
     font-weight: 400;
-    color: #1E1E1E;
+    color: #444444;
     margin: 0;
 }
 
@@ -124,7 +124,7 @@ import { batteryHalfOutline } from 'ionicons/icons';
 .battery-row h2 {
     font-size: 20px;
     font-weight: bolder;
-    color: #1E1E1E;
+    color: #444444;
     margin: 0;
 }
 
@@ -172,6 +172,14 @@ import { batteryHalfOutline } from 'ionicons/icons';
     width: 100%;
     padding: 0;
     z-index: 0;
+    color: #444444;
+}
+
+.tire-row h2 {
+    color: #444444;
+    font-weight: bolder;
+    margin: 32px 0;
+    padding: 0 16px;
 }
 
 .tire-row.top {

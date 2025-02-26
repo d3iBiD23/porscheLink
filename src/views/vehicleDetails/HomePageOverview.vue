@@ -3,7 +3,7 @@
     <IonHeader>
       <IonToolbar>
         <IonTitle>
-          <img src="\assets\logos\porscheLogo.png" alt="porscheLogo" class="porscheLogo">
+          <img src="\assets\logos\porscheLogo.svg" alt="porscheLogo" class="porscheLogo">
         </IonTitle>
       </IonToolbar>
       <IonToolbar>
@@ -83,7 +83,7 @@ ion-toolbar {
 }
 
 .car-title {
-  font-size: 24px;
+  font-size: 1.8rem;
   font-weight: bold;
   margin: 0;
   padding: 0 30px;

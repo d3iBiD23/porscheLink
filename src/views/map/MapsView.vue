@@ -1,7 +1,7 @@
 <template>
     <ion-page>
         <!-- Añadido: Botón de volver atrás -->
-        <ion-button class="back-button" fill="clear" @click="goBack">
+        <ion-button class="back-button" fill="clear" @click="goBackStep">
             <ion-icon :icon="chevronBack" slot="icon-only"></ion-icon>
         </ion-button>
 
@@ -41,9 +41,14 @@
                             <ion-button @click="goToStationDetails" class="start-route-btn">
                                 Start Route
                             </ion-button>
-                            <ion-button fill="clear" class="favorite-btn">
-                                <ion-icon :icon="starOutline"></ion-icon>
+
+                            <!-- Botón Favorito -->
+                            <ion-button fill="clear" class="favorite-btn" :class="{ active: isFavorite }"
+                                @click="toggleFavorite">
+                                <!-- Cambia de icono si prefieres starOutline/star -->
+                                <ion-icon :icon="isFavorite ? star : starOutline"></ion-icon>
                             </ion-button>
+
                         </div>
                     </div>
                 </div>
@@ -71,6 +76,12 @@
                             <span>2,4 km</span>
                         </div>
                     </div>
+                    <!-- Nuevo botón para ir a /tabs/homepage -->
+                    <div class="nav-actions">
+                        <ion-button fill="solid" class="go-home-btn" @click="goHomePage">
+                            Exit
+                        </ion-button>
+                    </div>
                 </div>
             </transition>
         </ion-content>
@@ -80,15 +91,30 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue';
 import { IonPage, IonContent, IonButton, IonIcon } from '@ionic/vue';
-import { navigateOutline, starOutline, chevronBack } from 'ionicons/icons';
+import { navigateOutline, starOutline, chevronBack, star } from 'ionicons/icons';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
+const isFavorite = ref(false);
+function toggleFavorite() {
+    isFavorite.value = !isFavorite.value;
+}
+
 // Función para volver atrás
-const goBack = () => {
-    router.back();
-};
+function goBackStep() {
+    if (step.value > 1) {
+        // Si estamos en step 3 o 2, retrocedemos uno
+        step.value = step.value - 1;
+    } else {
+        // Si estamos en step 1, hacemos router.back() o la lógica que quieras
+        router.back();
+    }
+}
+
+function goHomePage() {
+    router.push('/tabs/homepage');
+}
 
 /* ESTADOS DE LA PANTALLA */
 const step = ref(1);
@@ -289,7 +315,7 @@ ion-content.maps-content {
     color: white;
     padding: 12px 30px;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 1rem;
     font-weight: 700;
     white-space: nowrap;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -407,7 +433,7 @@ ion-content.maps-content {
     flex: 1;
     height: 52px;
     /* Altura fija para ambos botones */
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 500;
     text-transform: none;
     letter-spacing: 0;
@@ -482,16 +508,30 @@ ion-content.maps-content {
 }
 
 .favorite-btn {
+    /* Tus estilos base */
     --background: #444444;
     --color: white;
     --border-radius: 8px;
     margin: 0;
     height: 52px;
-    /* Misma altura que start-route-btn */
     width: 52px;
-    /* Hacer el botón cuadrado */
     --padding-start: 0;
     --padding-end: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Si quieres un color base más claro, ajusta */
+}
+
+.favorite-btn.active {
+    /* FONDO más oscuro */
+    --border-radius: 8px;
+}
+
+.favorite-btn.active ion-icon {
+    color: #F28100;
+    /* Estrella naranja */
+    --border-radius: 8px;
 }
 
 .favorite-btn ion-icon {
@@ -510,5 +550,22 @@ ion-content.maps-content {
 
 .favorite-btn:hover {
     --background: #505050;
+}
+
+.nav-actions {
+    margin-top: 16px;
+    text-align: center;
+    /* o left/right según tu diseño */
+}
+
+.go-home-btn {
+    --border-radius: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: none;
+    --padding-start: 5rem;
+    --padding-end: 5rem;
+    --background: #f28100b4;
+    --color: white;
 }
 </style>

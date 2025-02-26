@@ -53,6 +53,7 @@ ion-tab-bar {
 
 ion-tab-button {
   color: black;
+  font-weight: bolder;
 }
 
 </style>
