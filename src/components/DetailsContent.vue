@@ -8,35 +8,37 @@ import { batteryHalfOutline } from 'ionicons/icons';
     <div class="details-content">
         <!-- Car Image Section -->
         <div class="car-image-section mb-8">
-            <img src="/assets/imagesMainScreen/taycan/taycanImage.png" alt="Porsche Taycan"
-                class="taycanImage" />
+            <img src="/assets/imagesMainScreen/taycan/taycanImage.png" alt="Porsche Taycan" class="taycanImage" />
         </div>
 
         <!-- Total Mileage Section -->
-        <div class="info-section">
-            <h2>Total Mileage</h2>
-            <div class="flex items-center">
-                <p class="text-2xl font-medium">3,122 km</p>
+        <div class="total-mileage">
+            <div class="mileage-row">
+                <h2>Total Mileage</h2>
+                <p>3,122 km</p>
             </div>
         </div>
 
         <!-- Battery Section -->
-        <div class="info-section">
-            <h2>Battery</h2>
-            <div class="flex items-center gap-2">
-                <ion-icon :icon="batteryHalfOutline"></ion-icon>
-                <div class="battery-bar flex-grow">
-                    <div class="battery-level" style="width: 75%"></div>
-                    <span>553km</span>
+        <div class="battery-section">
+            <div class="battery-row">
+                <h2>Battery</h2>
+            </div>
+            <div class="battery-indicator">
+                <img src="/assets/imagesMainScreen/ChargingStation.svg" alt="ChargingStation" class="battery-icon">
+                <div class="battery-bar">
+                    <div class="battery-level" style="width: 40%"></div>
                 </div>
             </div>
         </div>
 
         <!-- Tire Pressure Section -->
-        <div class="info-section">
-            <h2>Tire Pressure</h2>
+        <div class="tire-section">
+            <div class="tire-row">
+                <h2>Tire Pressure</h2>
+            </div>
             <div class="tire-pressure-container">
-                <!-- Top Row (Front Tires) -->
+                <!-- Top Row -->
                 <div class="tire-row top">
                     <div class="pressure-box">35 psi</div>
                     <div class="pressure-box">
@@ -47,10 +49,10 @@ import { batteryHalfOutline } from 'ionicons/icons';
 
                 <!-- Car Illustration -->
                 <div class="car-illustration">
-                    <img src="/assets/carIllustration.png" alt="Car Layout" class="opacity-20" />
+                    <img src="/assets/carIllustration.png" alt="Car Layout" />
                 </div>
 
-                <!-- Bottom Row (Rear Tires) -->
+                <!-- Bottom Row -->
                 <div class="tire-row bottom">
                     <div class="pressure-box">35 psi</div>
                     <div class="pressure-box">
@@ -74,41 +76,85 @@ import { batteryHalfOutline } from 'ionicons/icons';
 }
 
 .info-section {
+    color: black;
     margin-bottom: 32px;
 }
 
+.total-mileage {
+    color: black;
+    margin: 32px 0;
+    padding: 0 16px;
+}
+
+.mileage-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mileage-row h2 {
+    font-size: 20px;
+    font-weight: bolder;
+    color: #1E1E1E;
+    margin: 0;
+}
+
+.mileage-row p {
+    font-size: 20px;
+    font-weight: 400;
+    color: #1E1E1E;
+    margin: 0;
+}
+
 .info-section h2 {
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: bolder;
     color: #333;
     margin-bottom: 12px;
 }
 
-/* Battery Styles */
+.battery-section {
+    padding: 0 16px;
+}
+
+.battery-row {
+    margin-bottom: 16px;
+}
+
+.battery-row h2 {
+    font-size: 20px;
+    font-weight: bolder;
+    color: #1E1E1E;
+    margin: 0;
+}
+
+.battery-indicator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.battery-icon {
+    font-size: 24px;
+    color: #1E1E1E;
+}
+
 .battery-bar {
-    background: #eee;
-    height: 20px;
-    border-radius: 10px;
+    flex: 1;
+    height: 8px;
+    background: #E5E5E5;
+    border-radius: 4px;
     position: relative;
     overflow: hidden;
 }
 
 .battery-level {
-    background: #4CAF50;
     height: 100%;
-    border-radius: 10px;
+    background: #4CAF50;
+    border-radius: 4px;
     transition: width 0.3s ease;
 }
 
-.battery-bar span {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #333;
-    font-size: 14px;
-    font-weight: 500;
-}
 
 /* Tire Pressure Styles */
 .tire-pressure-container {
@@ -140,8 +186,8 @@ import { batteryHalfOutline } from 'ionicons/icons';
     position: relative;
     border: 2px solid #444444;
     border-radius: 8px;
-    font-weight: 500;
-    padding: 25px 45px;
+    font-weight: bolder;
+    padding: 2rem 3rem;
     background: white;
     min-width: 80px;
     color: #444444;
@@ -152,27 +198,32 @@ import { batteryHalfOutline } from 'ionicons/icons';
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 180px;
+    width: 160px;
     z-index: 1;
+}
+
+.car-illustration img {
+    width: 100%;
+    height: auto;
+    opacity: 0.4;
 }
 
 .warning {
     position: absolute;
-    right: -12px;
     font-size: 12px;
-    padding: 2px 6px;
-    border-radius: 4px;
+    font-weight: 500;
     white-space: nowrap;
-    font-weight: bold;
 }
 
 .warning-high {
-    color: #f59e0b;
     top: -20px;
+    right: 0;
+    color: #F28100;
 }
 
 .warning-low {
-    color: #ef4444;
     bottom: -20px;
+    right: 0;
+    color: #EF4444;
 }
 </style>

@@ -114,7 +114,9 @@ onMounted(() => {
                 datasets: [{
                     data: [80, 85, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20],
                     borderColor: (context) => {
-                        const value = context.raw;
+                        const value = context.raw as number;
+                        if (typeof value !== 'number') return '#FF0000'; // Fallback color
+
                         if (value > 70) return '#00FF2F';
                         if (value > 40) return '#F28100';
                         return '#FF0000';

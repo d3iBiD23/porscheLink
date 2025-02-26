@@ -1,16 +1,18 @@
 <template>
     <ion-page>
-        <!-- Encabezado IonHeader, con barra "Showing Charging Stations" -->
-        <ion-header>
-            <ion-toolbar color="dark">
-                <ion-buttons slot="start">
-                    <ion-back-button default-href="/tabs/homepage" text="" />
-                </ion-buttons>
-                <ion-title>Showing Charging Stations</ion-title>
-            </ion-toolbar>
-        </ion-header>
+        <!-- Añadido: Botón de volver atrás -->
+        <ion-button class="back-button" fill="clear" @click="goBack">
+            <ion-icon :icon="chevronBack" slot="icon-only"></ion-icon>
+        </ion-button>
 
-        <!-- Contenido a pantalla completa, sin scroll nativo -->
+        <!-- Botón flotante "Showing Charging Stations" -->
+        <div class="top-header">
+            <div class="showing-stations-button">
+                Showing Charging Stations
+            </div>
+        </div>
+
+        <!-- IonContent que ocupa toda la pantalla, sin scroll nativo -->
         <ion-content fullscreen :scroll="false" class="maps-content">
             <!-- Contenedor para pan & zoom -->
             <div class="map-wrapper" ref="mapWrapper" @pointerdown="onPointerDown" @pointermove="onPointerMove"
@@ -30,33 +32,44 @@
             <!-- Tarjetas inferiores (pasos 1, 2, 3) -->
             <transition name="slide-up">
                 <div v-if="step === 1" class="bottom-card">
-                    <h3>{{ selectedStation.title }}</h3>
-                    <p>{{ selectedStation.address }}</p>
-                    <ion-button @click="goToStationDetails" class="start-route-btn">
-                        Start Route
-                    </ion-button>
+                    <div class="card-content">
+                        <div class="card-text">
+                            <h3>{{ selectedStation.title }}</h3>
+                            <p>{{ selectedStation.address }}</p>
+                        </div>
+                        <div class="card-actions">
+                            <ion-button @click="goToStationDetails" class="start-route-btn">
+                                Start Route
+                            </ion-button>
+                            <ion-button fill="clear" class="favorite-btn">
+                                <ion-icon :icon="starOutline"></ion-icon>
+                            </ion-button>
+                        </div>
+                    </div>
                 </div>
             </transition>
 
             <transition name="slide-up">
-                <div v-if="step === 2" class="bottom-card expanded">
+                <div v-if="step === 2" class="bottom-card">
                     <h3>{{ selectedStation.title }}</h3>
                     <p>{{ selectedStation.address }}</p>
                     <img v-if="selectedStation.image" :src="selectedStation.image" alt="Station preview"
                         class="station-preview" />
-                    <ion-button @click="startRoute" class="start-route-btn">
-                        Start Route
-                    </ion-button>
                 </div>
             </transition>
 
             <transition name="slide-up">
                 <div v-if="step === 3" class="nav-card">
-                    <h2>17:15</h2>
-                    <div class="nav-info">
-                        <span>20 min</span>
-                        <span>|</span>
-                        <span>2,4 km</span>
+                    <div class="nav-content">
+                        <h2>17:15</h2>
+                        <div class="nav-icon">
+                            <ion-icon :icon="navigateOutline"></ion-icon>
+                        </div>
+                        <div class="nav-info">
+                            <span>20 min</span>
+                            <span class="nav-dot">•</span>
+                            <span>2,4 km</span>
+                        </div>
                     </div>
                 </div>
             </transition>
@@ -65,16 +78,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue';
-import {
-    IonPage,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonButtons,
-    IonBackButton,
-    IonContent,
-} from '@ionic/vue';
+import { ref, reactive, computed, watch } from 'vue';
+import { IonPage, IonContent, IonButton, IonIcon } from '@ionic/vue';
+import { navigateOutline, starOutline, chevronBack } from 'ionicons/icons';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+// Función para volver atrás
+const goBack = () => {
+    router.back();
+};
 
 /* ESTADOS DE LA PANTALLA */
 const step = ref(1);
@@ -84,7 +98,7 @@ const stations = [
     {
         title: "Porsche Charging Station Santa Coloma de Gramenet",
         address: "Av. de l'Anselm de Riu, 10, 08924 Barcelona",
-        image: "/assets/station_example.jpg",
+        image: "/assets/map_station_image.svg",
         top: 35,
         left: 50,
     },
@@ -112,12 +126,14 @@ function selectStation(station: any) {
 
 function goToStationDetails() {
     step.value = 2;
+    // Iniciar temporizador para ir al step 3
+    setTimeout(() => {
+        startRoute();
+    }, 1500);
 }
 
 function startRoute() {
-    setTimeout(() => {
-        step.value = 3;
-    }, 2000);
+    step.value = 3;
 }
 
 /* ZOOM & PAN */
@@ -136,6 +152,20 @@ const transformStyles = computed(() => {
         transformOrigin: 'center center',
     };
 });
+
+function updateMapBounds() {
+    const wrapper = mapWrapper.value;
+    if (wrapper) {
+        const wrapperRect = wrapper.getBoundingClientRect();
+        // Calculamos los límites basados en el zoom actual
+        const maxX = wrapperRect.width * (scale.value - 1);
+        const maxY = wrapperRect.height * (scale.value - 1);
+
+        // Aplicamos límites más restrictivos para evitar bordes negros
+        translateX.value = Math.max(-maxX, Math.min(maxX, translateX.value));
+        translateY.value = Math.max(-maxY, Math.min(maxY, translateY.value));
+    }
+}
 
 function onPointerDown(e: PointerEvent) {
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
@@ -164,16 +194,29 @@ function onPointerMove(e: PointerEvent) {
             (p2.y - e.movementY) - (p1.y - e.movementY)
         );
         const distDelta = currentDist - oldDist;
-        scale.value += distDelta * 0.005;
-        if (scale.value < 0.5) scale.value = 0.5;
-        if (scale.value > 3) scale.value = 3;
+        scale.value = Math.max(0.5, Math.min(5, scale.value + distDelta * 0.005));
+        updateMapBounds(); // Actualizar límites después del pinch-zoom
     }
     // Pan con un solo dedo
     else if (isPointerDown.value && Object.keys(activePointers).length === 1) {
         const dx = e.clientX - lastX.value;
         const dy = e.clientY - lastY.value;
-        translateX.value += dx;
-        translateY.value += dy;
+
+        const wrapper = mapWrapper.value;
+        if (wrapper) {
+            const wrapperRect = wrapper.getBoundingClientRect();
+            // Permitir más movimiento basado en el zoom
+            const maxX = wrapperRect.width * scale.value;
+            const maxY = wrapperRect.height * scale.value;
+
+            const newX = translateX.value + dx;
+            const newY = translateY.value + dy;
+
+            // Límites más permisivos para el panneo
+            translateX.value = Math.max(-maxX, Math.min(maxX, newX));
+            translateY.value = Math.max(-maxY, Math.min(maxY, newY));
+        }
+
         lastX.value = e.clientX;
         lastY.value = e.clientY;
     }
@@ -188,52 +231,103 @@ function onPointerUp(e: PointerEvent) {
 
 function onWheel(e: WheelEvent) {
     const zoomSpeed = 0.001;
-    if (e.deltaY < 0) {
-        scale.value += Math.abs(e.deltaY) * zoomSpeed;
-    } else {
-        scale.value -= Math.abs(e.deltaY) * zoomSpeed;
-    }
-    if (scale.value < 0.5) scale.value = 0.5;
-    if (scale.value > 3) scale.value = 3;
+    const newScale = e.deltaY < 0
+        ? scale.value + Math.abs(e.deltaY) * zoomSpeed
+        : scale.value - Math.abs(e.deltaY) * zoomSpeed;
+
+    scale.value = Math.max(0.5, Math.min(5, newScale));
+    updateMapBounds(); // Actualizar límites después del zoom
 }
 </script>
 
 <style scoped>
-/* Quitar padding del ion-content, forzar fullscreen real */
+/* Haz que IonPage e IonContent ocupen todo el alto */
+ion-page,
 ion-content.maps-content {
-    --ion-safe-area-top: 0;
-    --ion-safe-area-bottom: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
     --background: #000;
     position: relative;
 }
 
-/* Contenedor de mapa que ocupa todo el espacio */
+/* Estilo para el botón de volver */
+.back-button {
+    position: absolute;
+    top: 8rem;
+    left: 1rem;
+    z-index: 999;
+    --padding-start: 10px;
+    --padding-end: 10px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    --background: #1D1D1D;
+    --color: white;
+    --border-radius: 50%;
+    margin: 0;
+    height: 50px;
+    width: 50px;
+    backdrop-filter: blur(8px);
+}
+
+.back-button:hover {
+    --background: #2D2D2D;
+}
+
+/* Botón flotante "Showing Charging Stations" */
+.top-header {
+    position: absolute;
+    top: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+}
+
+.showing-stations-button {
+    background-color: #1D1D1D;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Contenedor del mapa que ocupa todo IonContent */
 .map-wrapper {
     position: absolute;
     top: 0;
-    bottom: 0;
     left: 0;
-    right: 0;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
 }
 
-/* Transform container donde se aplica el pan & zoom */
+/* Transform container donde se aplica pan & zoom */
 .map-transform {
     position: absolute;
-    top: 0;
-    left: 0;
+    width: 400%;
+    height: 200%;
     will-change: transform;
+    transform-origin: center center;
 }
 
-/* Imagen del mapa, más ancha que la pantalla para permitir pan */
+/* Imagen del mapa */
 .map-image {
-    width: 2000px;
-    /* Ajusta según necesites */
-    height: auto;
-    display: block;
+    width: 100%;
+    /* Hacer la imagen más grande que el viewport */
+    height: 100%;
+    /* Hacer la imagen más grande que el viewport */
+    object-fit: cover;
     user-select: none;
     touch-action: none;
-    object-fit: cover;
+    display: block;
+    position: absolute;
+    /* Centrar la imagen */
+    left: -50%;
+    /* Centrar la imagen */
 }
 
 /* Marcadores */
@@ -248,13 +342,14 @@ ion-content.maps-content {
 /* Tarjetas inferiores (z-index alto para superponerse al mapa) */
 .bottom-card,
 .nav-card {
-    z-index: 99;
+    z-index: 999;
+    color: white;
 }
 
 /* Transiciones para las tarjetas (slide-up) */
 .slide-up-enter-active,
 .slide-up-leave-active {
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slide-up-enter-from,
@@ -266,25 +361,28 @@ ion-content.maps-content {
 /* Estilo base de las tarjetas */
 .bottom-card {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: white;
-    border-radius: 12px 12px 0 0;
-    padding: 16px;
-    min-height: 120px;
-    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    background: #1D1D1D;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .bottom-card h3 {
-    margin: 0 0 8px 0;
-    font-size: 16px;
-    font-weight: bold;
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    line-height: 1.2;
 }
 
 .bottom-card p {
-    margin: 0 0 12px 0;
-    color: #666;
+    margin: 0 0 20px 0;
+    color: #9CA3AF;
+    font-size: 14px;
+    line-height: 1.4;
 }
 
 .bottom-card.expanded {
@@ -298,30 +396,47 @@ ion-content.maps-content {
 }
 
 .start-route-btn {
+    --background: #444444;
+    --color: white;
     --border-radius: 8px;
-    --background: #F28100;
-    --color: #fff;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    margin: 0;
+    flex: 1;
+    height: 52px;
+    /* Altura fija para ambos botones */
+    font-size: 16px;
+    font-weight: 500;
     text-transform: none;
-    font-weight: bold;
+    letter-spacing: 0;
 }
 
 /* Pantalla 3 (tarjeta de navegación) */
 .nav-card {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #111;
-    padding: 16px;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    background: #1D1D1D;
+    padding: 20px;
     text-align: center;
     color: #fff;
-    border-radius: 12px 12px 0 0;
-    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.nav-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
 }
 
 .nav-card h2 {
     margin: 0;
-    font-size: 24px;
+    font-size: 30px;
     font-weight: bold;
 }
 
@@ -331,5 +446,69 @@ ion-content.maps-content {
     display: flex;
     justify-content: center;
     gap: 8px;
+}
+
+.nav-icon {
+    color: white;
+    font-size: 30px;
+    line-height: 1;
+}
+
+.nav-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    color: white;
+}
+
+.nav-dot {
+    font-size: 30px;
+    line-height: 1;
+    position: relative;
+    top: -1px;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-actions {
+    display: flex;
+    align-items: stretch;
+    /* Hacer que ambos botones tengan la misma altura */
+    gap: 8px;
+}
+
+.favorite-btn {
+    --background: #444444;
+    --color: white;
+    --border-radius: 8px;
+    margin: 0;
+    height: 52px;
+    /* Misma altura que start-route-btn */
+    width: 52px;
+    /* Hacer el botón cuadrado */
+    --padding-start: 0;
+    --padding-end: 0;
+}
+
+.favorite-btn ion-icon {
+    font-size: 24px;
+    /* Icono más grande */
+}
+
+.card-text {
+    margin-bottom: 20px;
+    /* Espacio antes de los botones */
+}
+
+.start-route-btn:hover {
+    --background: #505050;
+}
+
+.favorite-btn:hover {
+    --background: #505050;
 }
 </style>
