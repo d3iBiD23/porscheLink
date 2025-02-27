@@ -144,7 +144,6 @@ ion-input {
 }
 
 .forgot-password {
-    display: block;
     color: white;
     text-align: left;
     font-size: 14px;
