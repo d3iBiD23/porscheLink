@@ -18,7 +18,7 @@
                     <ion-label>Email or phone number</ion-label>
                     <ion-input type="email" v-model="email" placeholder="Email or phone number" required></ion-input>
                 </div>
-                <ion-button expand="block" type="submit" class="login-button" @click="goToMainScreen">
+                <ion-button expand="block" class="login-button" @click="goToMainScreen">
                     Send verification code
                 </ion-button>
             </form>
