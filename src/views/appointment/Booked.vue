@@ -16,8 +16,9 @@
             </div>
 
             <!-- Texto principal que ahora muestra la fecha elegida -->
+            <img src="/assets/Notebook.svg" alt="Notebook" class="notebook">
             <span class="appointment-text">
-                Service Booked For {{ formattedDate }}.
+                Service Booked For {{ formattedHour }}.
             </span>
 
         </ion-content>
@@ -25,51 +26,24 @@
 </template>
 
 <script setup lang="ts">
+import { IonContent, IonPage, IonButtons, IonBackButton } from '@ionic/vue';
 import { ref, onMounted, computed } from 'vue';
-import { IonPage, IonContent, IonBackButton, IonButtons, } from '@ionic/vue';
-import router from '@/router';
 import { useRoute } from 'vue-router';
-
-// Aquí guardamos la fecha que nos llega de Appointment.vue
 const selectedDate = ref<string>('');
-// También guardamos la hora seleccionada en este componente
 const selectedHour = ref<string>('');
-
-// Para leer los parámetros de la URL
-const route = useRoute();
-
-// Computed para formatear la fecha en texto (ej: “November 26”)
+const route = useRoute(); onMounted(() => {
+    const dateQuery = route.query.date as string;
+    const hourQuery = route.query.hour as string; if (dateQuery) { selectedDate.value = dateQuery; } if (hourQuery) { selectedHour.value = hourQuery; }
+});
 const formattedDate = computed(() => {
     if (!selectedDate.value) return '';
     const date = new Date(selectedDate.value);
-
-    // Formato: mes largo + día numérico (p.ej. “November 26”)
-    const opciones: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('en-US', opciones);
+    const options: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
 });
 
-// Al montar el componente, tomamos el query param `date`
-onMounted(() => {
-    const dateQuery = route.query.date as string;
-    if (dateQuery) {
-        selectedDate.value = dateQuery;
-    }
-});
+const formattedHour = computed(() => { return selectedHour.value; });
 
-// Manejamos el cambio de hora
-function onHourChange(event: any) {
-    selectedHour.value = event.detail.value;
-    console.log('Selected hour:', selectedHour.value);
-}
-
-// Al confirmar, podemos ir a otra vista o mostrar algo en consola
-function confirmHour() {
-    console.log('Date:', selectedDate.value);
-    console.log('Hour:', selectedHour.value);
-
-    // Ejemplo: ir a otra pantalla (Booked.vue) o lo que necesites
-    router.push('/appointment/booked');
-}
 </script>
 
 <style scoped>
@@ -202,5 +176,12 @@ ion-datetime::part(wheel-item-active) {
     --padding-bottom: 0.7rem;
 
     --ripple-color: transparent;
+}
+
+.notebook {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 2rem;
 }
 </style>

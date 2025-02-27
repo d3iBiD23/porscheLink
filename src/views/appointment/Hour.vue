@@ -34,27 +34,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import {
-    IonPage,
-    IonContent,
-    IonBackButton,
-    IonButtons,
-    IonDatetime,
-    IonIcon,
-    IonButton
-} from '@ionic/vue';
+import { IonDatetime, IonButton, IonButtons, IonContent, IonBackButton, IonPage } from '@ionic/vue';
 import router from '@/router';
-
-const selectedDate = ref<string>('');
-
-function onHourChange(event: any) {
-    selectedDate.value = event.detail.value;
-}
-
-function confirmHour() {
-    console.log('Selected date:', selectedDate.value);
-    router.push('/appointment/booked');
-}
+import { useRoute } from 'vue-router';
+const selectedHour = ref < string > ('');
+const route = useRoute();
+function onHourChange(event: any) { selectedHour.value = event.detail.value; }
+function confirmHour() { router.push({ path: '/appointment/booked', query: { date: route.query.date, hour: selectedHour.value } }); } 
 </script>
 
 <style scoped>

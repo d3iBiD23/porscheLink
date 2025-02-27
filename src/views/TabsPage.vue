@@ -50,6 +50,7 @@ const onMainScreen = computed(() => route.path === '/tabs/homepage')
 ion-tab-bar {
   --background: white;
   padding: 4px;
+  border-top: 1px solid rgba(174, 174, 174, 1);
 }
 
 ion-icon {
