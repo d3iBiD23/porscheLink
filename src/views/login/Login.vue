@@ -47,7 +47,7 @@ const password = ref('')
 const router = useRouter();
 
 const goToMainScreen = () => {
-    router.push('/tabs/homepage');
+    router.push('/details/homepage');
 };
 
 const goToRegisterScreen = () => {

@@ -57,7 +57,7 @@ const tabs = [
 
 const updateTab = (newTab: string) => {
   router.replace({
-    path: '/tabs/details',
+    path: '/details/overview',
     query: { ...route.query, tab: newTab, _force: Date.now() }
   });
 };

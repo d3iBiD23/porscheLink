@@ -13,22 +13,22 @@
             <ion-icon :icon="mapOutline" />
             <ion-label>Map</ion-label>
           </ion-tab-button>
-          <ion-tab-button tab="help" href="/tabs/help">
+          <ion-tab-button tab="help" href="/details/help">
             <ion-icon :icon="helpCircleOutline" />
             <ion-label>Help</ion-label>
           </ion-tab-button>
         </template>
 
         <template v-else>
-          <ion-tab-button tab="accountpage" href="/tabs/accountpage">
+          <ion-tab-button tab="accountpage" href="/details/accountpage">
             <ion-icon :icon="personOutline" />
             <ion-label>Account</ion-label>
           </ion-tab-button>
-          <ion-tab-button tab="homepage" href="/tabs/homepage">
+          <ion-tab-button tab="homepage" href="/details/homepage">
             <ion-icon :icon="homeOutline" />
             <ion-label>Home</ion-label>
           </ion-tab-button>
-          <ion-tab-button tab="help" href="/tabs/help">
+          <ion-tab-button tab="help" href="/details/help">
             <ion-icon :icon="helpCircleOutline" />
             <ion-label>Help</ion-label>
           </ion-tab-button>

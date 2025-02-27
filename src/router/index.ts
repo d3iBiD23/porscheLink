@@ -35,19 +35,19 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/account/AccountPage.vue"),
   },
   {
-    path: "/tabs/",
+    path: "/details",
     component: TabsPage,
     children: [
       {
         path: "",
-        redirect: "/tabs/homepage",
+        redirect: "/details/homepage",
       },
       {
         path: "homepage",
         component: () => import("@/views/mainScreen/MainScreen.vue"),
       },
       {
-        path: "details",
+        path: "overview",
         component: () => import("@/views/vehicleDetails/HomePageOverview.vue"),
       },
       {
@@ -59,24 +59,23 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/mainHelp/HelpPage.vue"),
       },
       {
-        path: "/stats",
-        name: "stats",
+        path: "stats",
         component: () => import("@/views/stats/MainStats.vue"),
       },
       {
-        path: "/appointment",
+        path: "appointment",
         component: () => import("@/views/appointment/Appointment.vue"),
       },
       {
-        path: "/appointment/hour",
+        path: "appointment/hour",
         component: () => import("@/views/appointment/Hour.vue"),
       },
       {
-        path: "/appointment/booked",
+        path: "appointment/booked",
         component: () => import("@/views/appointment/Booked.vue"),
       },
       {
-        path: "/diagnose",
+        path: "diagnose",
         component: () => import("@/views/diagnose/DiagnoseStatus.vue"),
       },
     ],

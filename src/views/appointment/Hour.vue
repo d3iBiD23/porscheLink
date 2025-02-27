@@ -5,7 +5,7 @@
             <!-- Header con back button y logo -->
             <div class="header">
                 <ion-buttons class="back-button">
-                    <ion-back-button default-href="/tabs/homepage" text=""></ion-back-button>
+                    <ion-back-button default-href="/details/homepage" text=""></ion-back-button>
                 </ion-buttons>
                 <img src="/assets/logos/porscheLogo.svg" alt="Porsche" class="logo" />
             </div>
@@ -40,7 +40,7 @@ import { useRoute } from 'vue-router';
 const selectedHour = ref < string > ('');
 const route = useRoute();
 function onHourChange(event: any) { selectedHour.value = event.detail.value; }
-function confirmHour() { router.push({ path: '/appointment/booked', query: { date: route.query.date, hour: selectedHour.value } }); } 
+function confirmHour() { router.push({ path: '/details/appointment/booked', query: { date: route.query.date, hour: selectedHour.value } }); } 
 </script>
 
 <style scoped>

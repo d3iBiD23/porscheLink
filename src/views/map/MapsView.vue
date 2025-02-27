@@ -15,13 +15,13 @@
         <!-- IonContent que ocupa toda la pantalla, sin scroll nativo -->
         <ion-content fullscreen :scroll="false" class="maps-content">
             <!-- Contenedor para pan & zoom -->
+
+
             <div class="map-wrapper" ref="mapWrapper" @pointerdown="onPointerDown" @pointermove="onPointerMove"
                 @pointerup="onPointerUp" @pointercancel="onPointerUp" @wheel.prevent="onWheel" @gesturestart.prevent
                 @gesturechange.prevent @gestureend.prevent style="touch-action: none;">
-                <!-- Transform para hacer zoom y pan -->
                 <div class="map-transform" :style="transformStyles">
                     <img src="/assets/map_image.svg" alt="Map" class="map-image" />
-                    <!-- Marcadores de estaciones -->
                     <div v-for="(station, index) in stations" :key="index" class="marker"
                         :style="{ top: station.top + '%', left: station.left + '%' }" @click="selectStation(station)">
                         <img src="/assets/chargingStation_pin.svg" alt="marker" />
@@ -89,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { IonPage, IonContent, IonButton, IonIcon } from '@ionic/vue';
 import { navigateOutline, starOutline, chevronBack, star } from 'ionicons/icons';
 import { useRouter } from 'vue-router';
@@ -113,7 +113,7 @@ function goBackStep() {
 }
 
 function goHomePage() {
-    router.push('/tabs/homepage');
+    router.push('/details/overview');
 }
 
 /* ESTADOS DE LA PANTALLA */
@@ -277,7 +277,7 @@ ion-content.maps-content {
     height: 100%;
     margin: 0;
     padding: 0;
-    --background: #000;
+    --background: #43575C;
     position: relative;
 }
 

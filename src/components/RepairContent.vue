@@ -46,11 +46,11 @@ const nextServiceDays = ref(23); // Ejemplo de días para el próximo servicio
 const lastDiagnose = ref('3 weeks ago');
 
 function bookAppointment() {
-    router.push('/appointment');
+    router.push('/details/appointment');
 }
 
 function diagnoseVehicle() {
-    router.push('/diagnose');
+    router.push('/details/diagnose');
 }
 
 </script>

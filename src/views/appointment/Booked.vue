@@ -4,7 +4,7 @@
             <!-- Header con back button y logo -->
             <div class="header">
                 <ion-buttons class="back-button">
-                    <ion-back-button default-href="/tabs/homepage" text=""></ion-back-button>
+                    <ion-back-button default-href="/details/homepage" text=""></ion-back-button>
                 </ion-buttons>
                 <img src="/assets/logos/porscheLogo.svg" alt="Porsche" class="logo" />
             </div>
@@ -51,7 +51,7 @@ onMounted(() => {
 });
 
 function goToRepair() {
-    router.push({ path: '/tabs/details', query: { tab: 'repair' } });
+    router.push({ path: '/details/overview', query: { tab: 'repair' } });
 }
 
 /**
