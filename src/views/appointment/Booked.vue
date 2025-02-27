@@ -17,7 +17,7 @@
             </div>
 
             <!-- Texto principal -->
-            <span class="appointment-text">Now Select An Hour For Your Appointment.</span>
+            <span class="appointment-text">Service Booked For November .</span>
 
             <!-- Contenedor para IonDatetime y el botón -->
             <div class="datetime-container">
@@ -43,7 +43,6 @@ import {
     IonIcon,
     IonButton
 } from '@ionic/vue';
-import router from '@/router';
 
 const selectedDate = ref<string>('');
 
@@ -53,7 +52,6 @@ function onHourChange(event: any) {
 
 function confirmHour() {
     console.log('Selected date:', selectedDate.value);
-    router.push('/appointment/booked');
 }
 </script>
 
