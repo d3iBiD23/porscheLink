@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import { IonIcon } from '@ionic/vue';
-import { batteryHalfOutline } from 'ionicons/icons';
-
-</script>
-
 <template>
     <div class="details-content">
         <!-- Car Image Section -->
@@ -24,10 +18,11 @@ import { batteryHalfOutline } from 'ionicons/icons';
             <div class="battery-row">
                 <h2>Battery</h2>
             </div>
+            <span class="kilometers">553km</span>
             <div class="battery-indicator">
-                <img src="/assets/imagesMainScreen/ChargingStation.svg" alt="ChargingStation" class="battery-icon">
+                <img src="/assets/imagesMainScreen/ChargingStation.svg" alt="ChargingStation">
                 <div class="battery-bar">
-                    <div class="battery-level" style="width: 40%"></div>
+                    <div class="battery-level" style="width: 70%"></div>
                 </div>
             </div>
         </div>
@@ -65,7 +60,6 @@ import { batteryHalfOutline } from 'ionicons/icons';
     </div>
 </template>
 <script setup lang="ts">
-
 </script>
 <style scoped>
 .taycanImage {
@@ -137,11 +131,6 @@ import { batteryHalfOutline } from 'ionicons/icons';
     gap: 12px;
 }
 
-.battery-icon {
-    font-size: 24px;
-    color: #1E1E1E;
-}
-
 .battery-bar {
     flex: 1;
     height: 8px;
@@ -151,17 +140,27 @@ import { batteryHalfOutline } from 'ionicons/icons';
     overflow: hidden;
 }
 
+.kilometers {
+    position: relative;
+    color: #1E1E1E;
+    font-size: 20px;
+    font-weight: normal;
+    color: #444444; 
+    margin-left: 60%;
+}
+
 .battery-level {
     height: 100%;
     background: #4CAF50;
     border-radius: 4px;
-    transition: width 0.3s ease;
+    transition: width 0.4s ease;
 }
 
 
 /* Tire Pressure Styles */
 .tire-pressure-container {
     position: relative;
+    margin-top: -10%;
     padding: 40px 20px;
     min-height: 280px;
     display: flex;
@@ -216,7 +215,7 @@ import { batteryHalfOutline } from 'ionicons/icons';
 .car-illustration img {
     width: 100%;
     height: auto;
-    opacity: 0.4;
+    opacity: 0.6;
 }
 
 .warning {

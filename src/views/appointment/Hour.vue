@@ -21,17 +21,15 @@
                 <div class="divider"></div>
             </div>
 
-            <span class="appointment-text">Select A Date For Your Appointment.</span>
+            <span class="appointment-text">Now Select An Hour For Your Appointment.</span>
 
             <!-- Contenedor para centrar el calendario y el botón -->
             <div class="datetime-container">
-                <!-- IonDatetime con estilo personalizado -->
-                <ion-datetime display-timezone="utc" presentation="date" locale="en-US" :value="selectedDate"
-                    @ionChange="onDateChange"></ion-datetime>
+                <ion-datetime display-timezone="utc" presentation="time" locale="en-US"
+                    @ionChange="onHourChange"></ion-datetime>
 
-                <!-- Botón con estilo similar al prototipo -->
-                <ion-button class="select-date-button" @click="confirmDate" fill="outline">
-                    Select Date
+                <ion-button class="select-date-button" @click="confirmHour" fill="outline">
+                    Confirm hour
                 </ion-button>
             </div>
 
@@ -56,17 +54,15 @@ import {
 
 // Importamos los iconos que necesitamos
 import { person, home, helpCircle, wifiOutline } from 'ionicons/icons';
-import router from '@/router';
 
 const selectedDate = ref<string>('');
 
-function onDateChange(event: any) {
+function onHourChange(event: any) {
     selectedDate.value = event.detail.value;
 }
 
-function confirmDate() {
+function confirmHour() {
     console.log('Selected date:', selectedDate.value);
-    router.push('/appointment/hour')
 }
 </script>
 
@@ -161,74 +157,19 @@ ion-back-button {
 
 /* ========== IonDatetime - Personalización con CSS Parts ========== */
 ion-datetime {
-    /* Ajusta dimensiones y color de fondo principal */
-    --background: #ffffff;
-    --color: #000000;
-    --border-radius: 0;
-
-    /* Para centrarlo dentro de su contenedor */
-    max-width: 350px;
-    width: 100%;
-
-    margin-bottom: 1rem;
+    --ion-background-color-rgb: 255, 255, 255;
+    --ion-text-color: #000;
+    /* ... y otras variables que quieras forzar ... */
 }
 
-/* Oculta el header nativo (si no quieres mostrar la barra con la fecha y botones) */
-ion-datetime::part(header) {
+ion-datetime::part(time-overlay-top),
+ion-datetime::part(time-overlay-bottom) {
+    background: none !important;
+    box-shadow: none !important;
     display: none;
+    /* si quieres eliminarlas por completo */
 }
 
-/* El contenedor del calendario */
-ion-datetime::part(calendar) {
-    background-color: #ffffff;
-}
-
-/* Texto de mes y año (por defecto IonDatetime muestra mes y año en la parte superior) */
-ion-datetime::part(month-year) {
-    font-size: 16px;
-    font-weight: 600;
-    color: #000;
-}
-
-/* Flechas para cambiar de mes (puedes ocultar la anterior si solo quieres la siguiente) */
-ion-datetime::part(prev-month),
-ion-datetime::part(next-month) {
-    color: #F28100;
-    /* Naranja Porsche */
-    font-size: 20px;
-}
-
-/* Días de la semana (encabezado) */
-ion-datetime::part(calendar-days-of-week) {
-    font-weight: 600;
-    font-size: 14px;
-    color: #666666;
-}
-
-/* Cada celda del día (texto) */
-ion-datetime::part(calendar-cell-text) {
-    color: #000000;
-    font-size: 14px;
-}
-
-/* El contenedor interno de cada día, para dar forma circular al “hover”/seleccionado */
-ion-datetime::part(calendar-cell-inner) {
-    border-radius: 50%;
-}
-
-/* Día seleccionado */
-ion-datetime::part(calendar-cell-active) {
-    background-color: #F28100 !important;
-    /* Naranja */
-    color: #ffffff !important;
-}
-
-/* Día sobre el que se hace hover (opcional) */
-ion-datetime::part(calendar-cell-hover) {
-    background-color: #f8e1cc;
-    /* un naranja muy claro */
-    color: #000000;
-}
 
 /* ========== Ion Tab Bar inferior ========== */
 ion-tab-bar {
@@ -250,11 +191,6 @@ ion-tab-button ion-icon {
 ion-tab-button ion-label {
     font-size: 12px;
     font-weight: 500;
-}
-
-/* Ocultar la flecha previa si no la quieres */
-ion-datetime::part(prev-month) {
-    display: none;
 }
 
 .appointment-text {
@@ -296,5 +232,28 @@ ion-datetime::part(prev-month) {
     /* Otras propiedades */
     text-transform: none;
     /* Mantener mayúsculas/minúsculas originales */
+}
+
+/* Aquí está la solución para quitar el fondo negro */
+ion-datetime::part(time-overlay) {
+    background: none !important;
+}
+
+ion-datetime::part(time-overlay-top),
+ion-datetime::part(time-overlay-bottom) {
+    /* Eliminar completamente los gradientes */
+    display: none !important;
+    background: none !important;
+}
+
+/* Mejorar la visibilidad de los números del tiempo */
+ion-datetime::part(wheel-item) {
+    color: #000000;
+}
+
+/* Opcional: Puedes ajustar el color del item seleccionado */
+ion-datetime::part(wheel-item active) {
+    color: #F28100;
+    font-weight: bold;
 }
 </style>

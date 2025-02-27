@@ -37,9 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage } from '@ionic/vue';
-import { eye, construct, settings, eyeOutline, constructOutline, settingsOutline, keyOutline } from 'ionicons/icons';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon } from '@ionic/vue';
+import { eyeOutline, constructOutline, keyOutline } from 'ionicons/icons';
 import DetailsContent from '@/components/DetailsContent.vue';
 import RepairContent from '@/components/RepairContent.vue';
 import FunctionsContent from '@/components/FunctionsContent.vue';
