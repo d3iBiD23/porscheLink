@@ -40,17 +40,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import {
-    IonPage,
-    IonContent,
-    IonBackButton,
-    IonButtons,
-    IonButton,
-    IonDatetime,
-    IonIcon
-} from '@ionic/vue';
-
-// Iconos
+import { IonPage, IonContent, IonBackButton, IonButtons, IonButton, IonDatetime, IonIcon } from '@ionic/vue';
 import { wifiOutline } from 'ionicons/icons';
 import router from '@/router';
 
@@ -62,9 +52,15 @@ function onDateChange(event: any) {
 
 function confirmDate() {
     console.log('Selected date:', selectedDate.value);
-    router.push('/appointment/hour');
+
+    // Enviamos la fecha seleccionada como query param a Hour.vue
+    router.push({
+        path: '/appointment/hour',
+        query: { date: selectedDate.value }
+    });
 }
 </script>
+
 
 <style scoped>
 /* ========== Estilos Globales del ion-content ========== */
@@ -249,10 +245,5 @@ ion-datetime::part(calendar-cell-hover) {
     --padding-bottom: 0.7rem;
     /* Sin ripple */
     --ripple-color: transparent;
-}
-
-/* (Opcional) Ocultar la flecha de mes anterior si no la quieres */
-ion-datetime::part(prev-month) {
-    /* display: none; */
 }
 </style>

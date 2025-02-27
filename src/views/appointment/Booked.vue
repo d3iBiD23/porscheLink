@@ -1,6 +1,5 @@
 <template>
     <ion-page>
-        <!-- Status bar superior (hora, wifi, etc.) -->
         <ion-content>
             <!-- Header con back button y logo -->
             <div class="header">
@@ -16,73 +15,72 @@
                 <div class="divider"></div>
             </div>
 
-            <!-- Texto principal -->
-            <span class="appointment-text">Service Booked For November .</span>
+            <!-- Texto principal que ahora muestra la fecha elegida -->
+            <span class="appointment-text">
+                Service Booked For {{ formattedDate }}.
+            </span>
 
-            <!-- Contenedor para IonDatetime y el botón -->
-            <div class="datetime-container">
-                <ion-datetime mode="ios" presentation="time" prefer="inline" locale="en-US" display-timezone="utc"
-                    @ionChange="onHourChange"></ion-datetime>
-
-                <ion-button class="select-date-button" @click="confirmHour" fill="outline">
-                    Confirm hour
-                </ion-button>
-            </div>
         </ion-content>
     </ion-page>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import {
-    IonPage,
-    IonContent,
-    IonBackButton,
-    IonButtons,
-    IonDatetime,
-    IonIcon,
-    IonButton
-} from '@ionic/vue';
+import { ref, onMounted, computed } from 'vue';
+import { IonPage, IonContent, IonBackButton, IonButtons } from '@ionic/vue';
+import router from '@/router';
+import { useRoute } from 'vue-router';
 
+// Aquí guardamos la fecha que nos llega de Appointment.vue
 const selectedDate = ref<string>('');
+// También guardamos la hora seleccionada en este componente
+const selectedHour = ref<string>('');
 
+// Para leer los parámetros de la URL
+const route = useRoute();
+
+// Computed para formatear la fecha en texto (ej: “November 26”)
+const formattedDate = computed(() => {
+    if (!selectedDate.value) return '';
+    const date = new Date(selectedDate.value);
+
+    // Formato: mes largo + día numérico (p.ej. “November 26”)
+    const opciones: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', opciones);
+});
+
+// Al montar el componente, tomamos el query param `date`
+onMounted(() => {
+    const dateQuery = route.query.date as string;
+    if (dateQuery) {
+        selectedDate.value = dateQuery;
+    }
+});
+
+// Manejamos el cambio de hora
 function onHourChange(event: any) {
-    selectedDate.value = event.detail.value;
+    selectedHour.value = event.detail.value;
+    console.log('Selected hour:', selectedHour.value);
 }
 
+// Al confirmar, podemos ir a otra vista o mostrar algo en consola
 function confirmHour() {
-    console.log('Selected date:', selectedDate.value);
+    console.log('Date:', selectedDate.value);
+    console.log('Hour:', selectedHour.value);
+
+    // Ejemplo: ir a otra pantalla (Booked.vue) o lo que necesites
+    router.push('/appointment/booked');
 }
 </script>
 
 <style scoped>
-/* ---------- Estilos Globales del ion-content ---------- */
+/* Tus estilos pueden seguir igual;
+     aquí se incluyen solo para referencia. */
 ion-content {
     --background: #ffffff;
     --color: #000000;
     --padding-top: 0;
 }
 
-/* ---------- Status bar superior ---------- */
-.status-bar {
-    height: 44px;
-    padding: 12px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: white;
-    font-weight: 500;
-}
-
-.time {
-    font-size: 16px;
-}
-
-.wifi-icon {
-    font-size: 18px;
-}
-
-/* ---------- Header (logo, back button) ---------- */
 .header {
     padding: 16px;
     display: flex;
@@ -108,7 +106,6 @@ ion-back-button {
     --padding-start: 0;
 }
 
-/* ---------- Imagen del auto + línea divisoria ---------- */
 .car-container {
     position: relative;
     padding: 0 16px;
@@ -130,7 +127,6 @@ ion-back-button {
     z-index: -1;
 }
 
-/* ---------- Texto principal ---------- */
 .appointment-text {
     color: #444;
     text-align: center;
@@ -142,7 +138,6 @@ ion-back-button {
     margin-bottom: 2rem;
 }
 
-/* ---------- Contenedor IonDatetime + Botón ---------- */
 .datetime-container {
     display: flex;
     flex-direction: column;
@@ -152,19 +147,14 @@ ion-back-button {
     margin-bottom: 20px;
 }
 
-/* ---------- IonDatetime: Forzar fondo blanco y quitar sombras/gradientes ---------- */
 ion-datetime {
-    /* Variables para forzar fondo blanco y texto negro */
     --ion-text-color: #000;
     --ion-color-scheme: light;
-    /* Fuerza modo claro, aunque la app esté en modo oscuro */
-
     max-width: 350px;
     width: 100%;
     margin-bottom: 1rem;
 }
 
-/* Quita gradientes/overlays */
 ion-datetime::part(time-overlay),
 ion-datetime::part(time-overlay-top),
 ion-datetime::part(time-overlay-bottom) {
@@ -173,7 +163,6 @@ ion-datetime::part(time-overlay-bottom) {
     box-shadow: none !important;
 }
 
-/* Forzar fondo blanco en todas las partes del “scroll wheel” */
 ion-datetime::part(base),
 ion-datetime::part(container),
 ion-datetime::part(time-container),
@@ -187,18 +176,15 @@ ion-datetime::part(wheel-native) {
     box-shadow: none !important;
 }
 
-/* Items de la rueda (horas, minutos, AM/PM) */
 ion-datetime::part(wheel-item) {
     color: #000 !important;
 }
 
-/* Item activo (seleccionado) */
 ion-datetime::part(wheel-item-active) {
     color: #F28100 !important;
     font-weight: bold;
 }
 
-/* ---------- Botón "Confirm hour" ---------- */
 .select-date-button {
     --border-width: 2px;
     --border-color: #000;
