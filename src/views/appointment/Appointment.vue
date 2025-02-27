@@ -143,6 +143,7 @@ ion-back-button {
     text-align: center;
     font-size: 18px;
     font-weight: 800;
+    padding: 1rem;
     display: flex;
     justify-content: center;
     flex-shrink: 0;
@@ -215,10 +216,18 @@ ion-datetime::part(calendar-cell-inner) {
     border-radius: 50%;
 }
 
+ion-datetime::part(calendar-cell-today) {
+    border: 2px solid #F28100 !important;
+    /* Anillo naranja */
+    background-color: transparent !important;
+    /* Sin relleno */
+    color: #F28100 !important;
+    /* Texto naranja */
+}
+
 /* Día seleccionado (fondo naranja, texto blanco) */
 ion-datetime::part(calendar-cell-active) {
     background-color: #F28100 !important;
-    /* Naranja */
     color: #ffffff !important;
 }
 
@@ -227,6 +236,19 @@ ion-datetime::part(calendar-cell-hover) {
     background-color: #f8e1cc;
     /* Naranja claro */
     color: #000000;
+}
+
+:deep(ion-datetime::part(calendar-day-today)) {
+  border: 2px solid #F28100 !important;
+  background-color: transparent !important;
+  color: #F28100 !important;
+}
+
+ion-datetime::part(calendar-day-today),
+ion-datetime::part(day-today) {
+  border: 2px solid #F28100 !important;
+  background-color: transparent !important;
+  color: #F28100 !important;
 }
 
 /* ========== Botón "Select Date" ========== */

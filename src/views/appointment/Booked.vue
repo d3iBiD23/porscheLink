@@ -18,32 +18,74 @@
             <!-- Texto principal que ahora muestra la fecha elegida -->
             <img src="/assets/Notebook.svg" alt="Notebook" class="notebook">
             <span class="appointment-text">
-                Service Booked For {{ formattedHour }}.
+                Service Booked For {{ formattedDateTime }}.
             </span>
 
+            <ion-button fill="outline" class="repair-button" @click="goToRepair">
+                Go to Repair
+            </ion-button>
         </ion-content>
     </ion-page>
 </template>
 
 <script setup lang="ts">
-import { IonContent, IonPage, IonButtons, IonBackButton } from '@ionic/vue';
+import { IonContent, IonPage, IonButtons, IonBackButton, IonButton } from '@ionic/vue';
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import router from '@/router';
+
 const selectedDate = ref<string>('');
 const selectedHour = ref<string>('');
-const route = useRoute(); onMounted(() => {
+const route = useRoute();
+
+onMounted(() => {
     const dateQuery = route.query.date as string;
-    const hourQuery = route.query.hour as string; if (dateQuery) { selectedDate.value = dateQuery; } if (hourQuery) { selectedHour.value = hourQuery; }
-});
-const formattedDate = computed(() => {
-    if (!selectedDate.value) return '';
-    const date = new Date(selectedDate.value);
-    const options: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
+    const hourQuery = route.query.hour as string;
+
+    if (dateQuery) {
+        selectedDate.value = dateQuery;
+    }
+    if (hourQuery) {
+        selectedHour.value = hourQuery;
+    }
 });
 
-const formattedHour = computed(() => { return selectedHour.value; });
+function goToRepair() {
+    router.push({ path: '/tabs/details', query: { tab: 'repair' } });
+}
 
+/**
+ * Combina la fecha y la hora en un único Date,
+ * y luego lo formatea a algo como:
+ * "February 27, 2025 at 11:18 AM"
+ */
+const formattedDateTime = computed(() => {
+    // Si no hay datos suficientes, salimos.
+    if (!selectedDate.value || !selectedHour.value) return '';
+
+    // Combina fecha y hora en un string tipo ISO, por ej. "2025-02-27T11:18"
+    // Ajusta si tu 'selectedHour' ya viene con segundos, etc.
+    const dateTimeString = `${selectedDate.value.substring(0, 10)}T${selectedHour.value.substring(11, 16)}`;
+
+    const dateObj = new Date(dateTimeString);
+
+    // Extraemos la parte de fecha
+    const datePart = dateObj.toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+    });
+
+    // Extraemos la parte de hora
+    const timePart = dateObj.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+    });
+
+    // Retornamos algo tipo: "February 27, 2025 at 11:18 AM"
+    return `${datePart} at ${timePart}`;
+});
 </script>
 
 <style scoped>
@@ -108,6 +150,7 @@ ion-back-button {
     font-weight: 800;
     display: flex;
     justify-content: center;
+    padding: 2rem;
     flex-shrink: 0;
     margin-bottom: 2rem;
 }
@@ -183,5 +226,24 @@ ion-datetime::part(wheel-item-active) {
     left: 50%;
     transform: translateX(-50%);
     margin-bottom: 2rem;
+}
+
+.repair-button {
+    display: flex;
+    padding: 3rem;
+    margin: 0 auto;
+    /* Para centrar horizontalmente */
+    /* Sin borde */
+    --border-color: black;
+    --border-radius: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: none;
+    --padding-start: 0.2rem;
+    --padding-top: 0.6rem;    
+    --padding-bottom: 0.6rem;    
+    --padding-end: 0.2rem;
+    --background: #F28100;
+    --color: white;
 }
 </style>

@@ -50,7 +50,7 @@ function bookAppointment() {
 }
 
 function diagnoseVehicle() {
-    console.log('Diagnosis started!');
+    router.push('/diagnose');
 }
 
 </script>
