@@ -78,6 +78,10 @@ const routes: Array<RouteRecordRaw> = [
         path: "diagnose",
         component: () => import("@/views/diagnose/DiagnoseStatus.vue"),
       },
+      {
+        path: "diagnosing",
+        component: () => import("@/views/diagnose/Diagnosing.vue"),
+      },
     ],
   },
 ];
