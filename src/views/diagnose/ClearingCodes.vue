@@ -16,11 +16,10 @@
             </div>
 
             <div class="loading-container">
-                <img src="/assets/Hourglass.svg" alt="Hourglass" class="hourglass" />
+                <img src="/assets/Broom.svg" alt="Broom" class="broom" />
             </div>
 
-            <span class="diagnosing-text">Diagnosing Vehicle...</span>
-
+            <span class="diagnosing-text">Cleaning Codes...</span>
         </ion-content>
     </ion-page>
 </template>
@@ -33,7 +32,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter(); // despues de 3 segundes se dirige a DiagnoseStatus.vue
 onMounted(() => {
     setTimeout(() => {
-        router.push('/details/diagnose');
+        router.push('/details/diagnosed');
     }, 3000)
 });
 </script>
@@ -134,17 +133,17 @@ ion-back-button {
     margin: 20px 0;
 }
 
-.hourglass {
+.broom {
     animation: spin 2s linear infinite;
 }
 
 @keyframes spin {
     0% {
-        transform: rotate(0deg);
+        transform: rotate(-30deg);
     }
 
     100% {
-        transform: rotate(360deg);
+        transform: rotate(50deg);
     }
 }
 </style>

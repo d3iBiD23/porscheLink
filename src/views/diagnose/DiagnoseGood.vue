@@ -23,7 +23,7 @@
                 <div class="status-overview">
                     <div class="status-indicator">
                         <div class="status-dot moderate"></div>
-                        <span class="status-text">Moderate</span>
+                        <span class="status-text">Really Good</span>
                     </div>
 
                     <!-- Indicador semicircular -->
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="status-details">
-                    <p class="errors-found">5 errors were found</p>
+                    <p class="errors-found">0 errors were found</p>
                     <p class="status-date">November 26, 2024</p>
                 </div>
 
@@ -40,57 +40,8 @@
                 <div class="trouble-codes-section">
                     <h2 class="section-title">Systems With Trouble Codes</h2>
                     <div class="divider-systems"></div>
-                    <div class="trouble-code-list">
-                        <!-- Código de error crítico (rojo) -->
-                        <div class="trouble-code-item">
-                            <div class="code-indicator critical"></div>
-                            <div class="code-details">
-                                <span class="code">P04A6</span>
-                                <span class="system">Central ECU</span>
-                            </div>
-                        </div>
-
-                        <!-- Código de error moderado (naranja) -->
-                        <div class="trouble-code-item">
-                            <div class="code-indicator moderate"></div>
-                            <div class="code-details">
-                                <span class="code">P02A9</span>
-                                <span class="system">Brakes</span>
-                            </div>
-                        </div>
-
-                        <!-- Código de error moderado (naranja) -->
-                        <div class="trouble-code-item">
-                            <div class="code-indicator moderate"></div>
-                            <div class="code-details">
-                                <span class="code">P02B3</span>
-                                <span class="system">Battery Components</span>
-                            </div>
-                        </div>
-
-                        <!-- Código de error leve (verde) -->
-                        <div class="trouble-code-item">
-                            <div class="code-indicator normal"></div>
-                            <div class="code-details">
-                                <span class="code">P041A</span>
-                                <span class="system">AirBag & Security System</span>
-                            </div>
-                        </div>
-
-                        <!-- Código de error leve (verde) -->
-                        <div class="trouble-code-item">
-                            <div class="code-indicator normal"></div>
-                            <div class="code-details">
-                                <span class="code">P045C</span>
-                                <span class="system">Engine Controls</span>
-                            </div>
-                        </div>
-                    </div>
-
+                    <span class="text-codes">All Error Codes Have Been Erased.</span>
                 </div>
-                <ion-button class="clear-code-button" fill="outline" @click="clearCodes">
-                    Clear All Possible Codes
-                </ion-button>
             </div>
         </ion-content>
     </ion-page>
@@ -107,7 +58,7 @@ import {
 import router from '@/router';
 
 function clearCodes() {
-    router.push('/details/clearingCodes');
+    router.push('/details/diagnosed');
 }
 
 </script>
@@ -205,7 +156,7 @@ ion-back-button {
 }
 
 .status-dot.moderate {
-    background-color: #FF8C00;
+    background-color: #00FF2F;
 }
 
 .status-text {
@@ -243,7 +194,7 @@ ion-back-button {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 12px solid #FF8C00;
+    border: 12px solid #00FF2F;
     /* color + grosor */
 
     /* Quita solo una parte de la circunferencia */
@@ -407,5 +358,17 @@ ion-toolbar {
     /* Asegúrate de que ocupe el 100% del ancho */
     right: 20%;
     margin-bottom: 1rem;
+}
+
+.text-codes {
+    color: #444;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-bottom: 2rem;
+    padding: 5rem;
 }
 </style>

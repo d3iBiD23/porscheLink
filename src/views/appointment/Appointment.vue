@@ -1,12 +1,6 @@
 <template>
     <ion-page>
-        <!-- Status bar superior (hora, wifi, etc.) -->
-        <div class="status-bar">
-            <span class="time">16:38</span>
-            <ion-icon :icon="wifiOutline" class="wifi-icon"></ion-icon>
-        </div>
-
-        <ion-content :fullscreen="true">
+        <ion-content>
             <!-- Header con back button y logo -->
             <div class="header">
                 <ion-buttons class="back-button">
@@ -70,24 +64,6 @@ ion-content {
     --padding-top: 0;
 }
 
-/* ========== Barra superior (status bar) ========== */
-.status-bar {
-    height: 44px;
-    padding: 12px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: white;
-    font-weight: 500;
-}
-
-.time {
-    font-size: 16px;
-}
-
-.wifi-icon {
-    font-size: 18px;
-}
 
 /* ========== Header (logo, back button) ========== */
 .header {
@@ -239,16 +215,16 @@ ion-datetime::part(calendar-cell-hover) {
 }
 
 :deep(ion-datetime::part(calendar-day-today)) {
-  border: 2px solid #F28100 !important;
-  background-color: transparent !important;
-  color: #F28100 !important;
+    border: 2px solid #F28100 !important;
+    background-color: transparent !important;
+    color: #F28100 !important;
 }
 
 ion-datetime::part(calendar-day-today),
 ion-datetime::part(day-today) {
-  border: 2px solid #F28100 !important;
-  background-color: transparent !important;
-  color: #F28100 !important;
+    border: 2px solid #F28100 !important;
+    background-color: transparent !important;
+    color: #F28100 !important;
 }
 
 /* ========== Botón "Select Date" ========== */

@@ -44,7 +44,7 @@ import { helpCircleOutline, homeOutline, mapOutline, personOutline } from 'ionic
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
-const onMainScreen = computed(() => route.path === '/tabs/homepage')
+const onMainScreen = computed(() => route.path === '/details/homepage')
 </script>
 <style scoped>
 ion-tab-bar {
