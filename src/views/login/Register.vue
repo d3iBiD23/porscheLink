@@ -29,7 +29,7 @@
                     <ion-input type="password" placeholder="Confirm password" required></ion-input>
                 </div>
 
-                <ion-button expand="block" type="submit" class="login-button" @click="goToMainScreen">
+                <ion-button expand="block" class="login-button" @click="goToMainScreen">
                     Create account
                 </ion-button>
                 <div class="login-link">
@@ -48,8 +48,6 @@ import { useRouter } from 'vue-router';
 import { ref } from 'vue'
 import { IonPage, IonLabel, IonInput, IonButton} from '@ionic/vue'
 
-const email = ref('')
-const password = ref('')
 
 const router = useRouter();
 
