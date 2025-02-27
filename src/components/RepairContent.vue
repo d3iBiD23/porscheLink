@@ -11,7 +11,7 @@
 
             <!-- Ícono de coche + texto "in X days" -->
             <div class="service-icon-and-text">
-                <img src="/public/assets/car_service.svg" alt="car_service" class="car-icon">
+                <img src="/assets/car_service.svg" alt="car_service" class="car-icon">
                 <p class="service-days">in {{ nextServiceDays }} days</p>
             </div>
 
@@ -37,33 +37,22 @@
         </div>
     </div>
 </template>
-<script>
-import { IonPage, IonContent, IonText, IonButton } from '@ionic/vue';
-import { carOutline } from 'ionicons/icons';
+<script setup lang="ts">
+import router from '@/router';
+import { IonButton } from '@ionic/vue';
+import { ref } from 'vue';
 
-export default {
-    components: {
-        IonPage,
-        IonContent,
-        IonText,
-        IonButton,
-    },
-    data() {
-        return {
-            nextServiceDays: 23, // Ejemplo de días para el próximo servicio
-            lastDiagnose: '3 weeks ago'
-        };
-    },
-    methods: {
-        bookAppointment() {
-            // Lógica para reservar una cita
-            console.log('Appointment booked!');
-        },
-        diagnoseVehicle() {
-            console.log('Diagnosis started!');
-        }
-    },
-};
+const nextServiceDays = ref(23); // Ejemplo de días para el próximo servicio
+const lastDiagnose = ref('3 weeks ago');
+
+function bookAppointment() {
+    router.push('/appointment');
+}
+
+function diagnoseVehicle() {
+    console.log('Diagnosis started!');
+}
+
 </script>
 <style scoped>
 h2 {

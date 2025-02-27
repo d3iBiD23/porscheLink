@@ -181,17 +181,20 @@ const transformStyles = computed(() => {
 
 function updateMapBounds() {
     const wrapper = mapWrapper.value;
-    if (wrapper) {
-        const wrapperRect = wrapper.getBoundingClientRect();
-        // Calculamos los límites basados en el zoom actual
-        const maxX = wrapperRect.width * (scale.value - 1);
-        const maxY = wrapperRect.height * (scale.value - 1);
+    if (!wrapper) return;
 
-        // Aplicamos límites más restrictivos para evitar bordes negros
-        translateX.value = Math.max(-maxX, Math.min(maxX, translateX.value));
-        translateY.value = Math.max(-maxY, Math.min(maxY, translateY.value));
-    }
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const mapWidth = 383 * scale.value;  // Ancho de la imagen con zoom aplicado
+    const mapHeight = 854 * scale.value; // Alto de la imagen con zoom aplicado
+
+    const maxX = Math.max(0, (mapWidth - wrapperRect.width) / 2);
+    const maxY = Math.max(0, (mapHeight - wrapperRect.height) / 2);
+
+    // Asegurar que no se muestren bordes negros
+    translateX.value = Math.max(-maxX, Math.min(maxX, translateX.value));
+    translateY.value = Math.max(-maxY, Math.min(0, translateY.value)); // Impide mover más allá del borde inferior
 }
+
 
 function onPointerDown(e: PointerEvent) {
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
@@ -565,7 +568,7 @@ ion-content.maps-content {
     text-transform: none;
     --padding-start: 5rem;
     --padding-end: 5rem;
-    --background: #f28100b4;
+    --background: #F28100;
     --color: white;
 }
 </style>

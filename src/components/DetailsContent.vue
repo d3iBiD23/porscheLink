@@ -64,6 +64,9 @@ import { batteryHalfOutline } from 'ionicons/icons';
         </div>
     </div>
 </template>
+<script setup lang="ts">
+
+</script>
 <style scoped>
 .taycanImage {
     position: relative;
