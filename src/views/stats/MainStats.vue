@@ -15,64 +15,293 @@
                 <div class="divider"></div>
             </div>
 
-            <!-- Título y contenido de estado del vehículo -->
+            <!-- Contenedor principal de estadísticas -->
             <div class="stats-container">
-                <h1 class="vehicle-status-title">Statistics</h1>
-                <div class="divider-systems"></div>
-                <h1 class="vehicle-status-title">September 2024</h1>
-                <div class="divider-systems"></div>
-                <h1 class="vehicle-status-title">Driving Style</h1>
-                <span>Your driving style needs to improve!</span>
+                <h1 class="stats-title">Statistics</h1>
+                <!-- Navegación de meses (flechas y nombre del mes) -->
+                <div class="month-nav">
+                    <!-- Flecha izquierda (si currentMonthIndex es 0, la ocultamos con visibility: hidden) -->
+                    <ion-button fill="clear" @click="prevMonth"
+                        :style="{ color: '#F28100', visibility: currentMonthIndex === 0 ? 'hidden' : 'visible' }">
+                        <ion-icon :icon="chevronBackOutline" />
+                    </ion-button>
 
-                <h1 class="vehicle-status-title">Braking</h1>
-                <span>Last trip braking efficiency</span>
-                <!-- Aqui grafico de frenada -->
+                    <!-- Texto del mes SIEMPRE en el medio -->
+                    <p class="stats-month">
+                        {{ monthsData[currentMonthIndex].monthName }}
+                    </p>
 
-                <h1 class="vehicle-status-title">Battery</h1>
-                <span>Last trip batter efficiency</span>
-                <!-- Aqui grafico de bateria -->
-             </div>
+                    <!-- Flecha derecha (si currentMonthIndex es el último, la ocultamos) -->
+                    <ion-button fill="clear" @click="nextMonth"
+                        :style="{ color: '#F28100', visibility: currentMonthIndex === monthsData.length - 1 ? 'hidden' : 'visible' }">
+                        <ion-icon :icon="chevronForwardOutline" />
+                    </ion-button>
+                </div>
+
+                <div class="stats-divider"></div>
+
+                <!-- Driving Style (Gauge con Chart.js Doughnut) -->
+                <div class="section-block">
+                    <h2 class="section-title">Driving Style</h2>
+                    <div class="driving-style-row">
+                        <div class="driving-text">
+                            <p class="driving-comment">
+                                {{ monthsData[currentMonthIndex].drivingComment }}
+                            </p>
+                        </div>
+                        <div class="driving-gauge">
+                            <canvas ref="drivingGaugeCanvas"></canvas>
+                            <!-- Texto con el porcentaje encima -->
+                            <span class="percentage">
+                                {{ monthsData[currentMonthIndex].gaugeData[0] }}%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-divider"></div>
+
+                <!-- Braking Chart (Line chart) -->
+                <div class="section-block">
+                    <h2 class="section-title">Braking</h2>
+                    <p class="section-subtitle">Last trips braking efficiency</p>
+                    <canvas ref="brakingChartCanvas" class="chart-canvas"></canvas>
+                </div>
+                <div class="stats-divider"></div>
+
+                <!-- Battery Chart (Bar chart) -->
+                <div class="section-block">
+                    <h2 class="section-title">Battery</h2>
+                    <p class="section-subtitle">Last trips battery efficiency</p>
+                    <canvas ref="batteryChartCanvas" class="chart-canvas"></canvas>
+                </div>
+            </div>
         </ion-content>
     </ion-page>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import {
     IonPage,
     IonContent,
     IonBackButton,
     IonButtons,
     IonButton,
+    IonIcon
 } from '@ionic/vue';
-import router from '@/router';
+import {
+    chevronBackOutline,
+    chevronForwardOutline
+} from 'ionicons/icons';
+import Chart from 'chart.js/auto';
 
-function clearCodes() {
-    router.push('/details/clearingCodes');
+const monthsData = [
+    {
+        monthName: 'September 2024',
+        gaugeData: [58, 42],
+        gaugeColor: ['#FF8C00', '#444'],
+        drivingComment: 'Your driving style needs to improve!',
+        brakingData: [20, 35, 55],
+        batteryData: [75, 80, 70],
+    },
+    {
+        monthName: 'October 2024',
+        gaugeData: [70, 30],
+        gaugeColor: ['#4CAF50', '#444'],
+        drivingComment: 'Your driving style is improving!',
+        brakingData: [35, 65, 75],
+        batteryData: [80, 85, 72],
+    },
+    {
+        monthName: 'November 2024',
+        gaugeData: [87, 13],
+        gaugeColor: ['#00FF2F', '#444'],
+        drivingComment: 'Your driving style is amazing!',
+        brakingData: [55, 75, 95],
+        batteryData: [90, 88, 84],
+    },
+];
+
+const currentMonthIndex = ref(0);
+
+const drivingGaugeCanvas = ref<HTMLCanvasElement | null>(null);
+const brakingChartCanvas = ref<HTMLCanvasElement | null>(null);
+const batteryChartCanvas = ref<HTMLCanvasElement | null>(null);
+
+let drivingGaugeChart: Chart | null = null;
+let brakingChart: Chart | null = null;
+let batteryChart: Chart | null = null;
+
+/**
+ * Inicializa las gráficas.
+ * Se añade un degradado para 'brakingChart' (línea) y 'batteryChart' (barras).
+ */
+function initCharts() {
+    // Driving Style (Gauge)
+    if (drivingGaugeCanvas.value) {
+        drivingGaugeChart = new Chart(drivingGaugeCanvas.value, {
+            type: 'doughnut',
+            data: {
+                labels: ['Good', 'Remaining'],
+                datasets: [
+                    {
+                        data: monthsData[currentMonthIndex.value].gaugeData,
+                        backgroundColor: monthsData[currentMonthIndex.value].gaugeColor,
+                        borderWidth: 1,
+                    },
+                ],
+            },
+            options: {
+                cutout: '70%',
+                plugins: {
+                    tooltip: { enabled: false },
+                    legend: { display: false },
+                },
+            },
+        });
+    }
+
+    // Braking (Line)
+    if (brakingChartCanvas.value) {
+        const ctx = brakingChartCanvas.value.getContext('2d');
+        if (ctx) {
+            // Creamos un degradado lineal de izquierda a derecha
+            const brakingGradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
+            // Ajusta los colores/paradas según tu prototipo
+            brakingGradient.addColorStop(0, '#FF0000'); // rojo
+            brakingGradient.addColorStop(0.5, '#FFA500'); // naranja
+            brakingGradient.addColorStop(1, '#008000'); // verde
+
+            brakingChart = new Chart(brakingChartCanvas.value, {
+                type: 'line',
+                data: {
+                    labels: ['Trip 1', 'Trip 2', 'Trip 3'],
+                    datasets: [
+                        {
+                            label: 'Braking Efficiency',
+                            data: monthsData[currentMonthIndex.value].brakingData,
+                            fill: false,
+                            borderColor: brakingGradient, // Usamos el gradient
+                            tension: 0.1,
+                        },
+                    ],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                        },
+                    },
+                    plugins: {
+                        legend: { display: false },
+                    },
+                },
+            });
+        }
+    }
+
+    // Battery (Bar)
+    if (batteryChartCanvas.value) {
+        const ctx = batteryChartCanvas.value.getContext('2d');
+        if (ctx) {
+            // Degradado vertical (de arriba a abajo)
+            const batteryGradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+            // Ajusta los colores/paradas según tu prototipo
+            batteryGradient.addColorStop(0, '#006212');  // verde claro 678A3B
+            batteryGradient.addColorStop(1, '#A8E063');  // verde más oscuro
+
+            batteryChart = new Chart(batteryChartCanvas.value, {
+                type: 'bar',
+                data: {
+                    labels: ['Trip 1', 'Trip 2', 'Trip 3'],
+                    datasets: [
+                        {
+                            label: 'Battery Efficiency',
+                            data: monthsData[currentMonthIndex.value].batteryData,
+                            backgroundColor: batteryGradient, // Usamos el gradient
+                        },
+                    ],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                        },
+                    },
+                    plugins: {
+                        legend: { display: false },
+                    },
+                },
+            });
+        }
+    }
 }
 
+/**
+ * Actualiza los datos de las gráficas cuando se cambia de mes.
+ * (Mantenemos el degradado creado en initCharts, solo se cambian los valores).
+ */
+function updateCharts() {
+    if (drivingGaugeChart) {
+        drivingGaugeChart.data.datasets[0].data =
+            monthsData[currentMonthIndex.value].gaugeData;
+        drivingGaugeChart.data.datasets[0].backgroundColor =
+            monthsData[currentMonthIndex.value].gaugeColor;
+        drivingGaugeChart.update();
+    }
+
+    if (brakingChart) {
+        brakingChart.data.datasets[0].data =
+            monthsData[currentMonthIndex.value].brakingData;
+        brakingChart.update();
+    }
+
+    if (batteryChart) {
+        batteryChart.data.datasets[0].data =
+            monthsData[currentMonthIndex.value].batteryData;
+        batteryChart.update();
+    }
+}
+
+/**
+ * Funciones para cambiar de mes.
+ */
+function prevMonth() {
+    if (currentMonthIndex.value > 0) {
+        currentMonthIndex.value--;
+        updateCharts();
+    }
+}
+
+function nextMonth() {
+    if (currentMonthIndex.value < monthsData.length - 1) {
+        currentMonthIndex.value++;
+        updateCharts();
+    }
+}
+
+onMounted(() => {
+    initCharts();
+});
 </script>
 
 <style scoped>
-/* ========== Estilos Globales del ion-content ========== */
+/* ====== Ion Content Global ====== */
 ion-content {
     --background: #ffffff;
     --color: #000000;
     --padding-top: 0;
 }
 
-
-/* ========== Header (logo, back button) ========== */
+/* ====== Header ====== */
 .header {
+    position: relative;
     padding: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-}
-
-.logo {
-    height: 12px;
-    margin-top: 16px;
 }
 
 .back-button {
@@ -87,11 +316,17 @@ ion-back-button {
     --padding-start: 0;
 }
 
-/* ========== Imagen del auto + línea divisoria ========== */
+.logo {
+    height: 12px;
+    margin-top: 16px;
+}
+
+/* ====== Car container & divider ====== */
 .car-container {
     position: relative;
     padding: 0 16px;
     bottom: 6%;
+    margin-bottom: 20px;
 }
 
 .car-image {
@@ -109,252 +344,105 @@ ion-back-button {
     z-index: -1;
 }
 
-/* ========== Contenedor de estado del vehículo ========== */
+/* ====== Stats container ====== */
 .stats-container {
-    position: relative;
     padding: 0 1.5rem;
+    position: relative;
     bottom: 1.5rem;
 }
 
-.vehicle-status-title {
+.stats-title {
     color: #444;
     font-size: 25px;
     font-weight: 700;
-    margin-bottom: 0.1rem;
+    margin-bottom: 0.5rem;
 }
 
-/* ========== Estado general ========== */
-.status-overview {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    position: relative;
-}
-
-.status-indicator {
+/* ====== Month Navigation (flechas y nombre del mes) ====== */
+.month-nav {
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: center;
+    gap: 1rem;
 }
 
-.graphic {
-    fill: #00FF2F;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    width: 84px;
-    height: 84px;
-    transform: rotate(-105.051deg);
-    flex-shrink: 0;
-}
-
-.status-dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-}
-
-.status-dot.moderate {
-    background-color: #FF8C00;
-}
-
-.status-text {
-    font-size: 20px;
-    font-weight: 600;
-    color: #444;
-    padding: 1rem;
-}
-
-.status-details {
-    position: relative;
-    bottom: 3rem;
-}
-
-.errors-found {
-    font-size: 16px;
+.stats-month {
+    font-size: 18px;
+    font-weight: 500;
     color: #444;
     margin: 0;
 }
 
-.status-date {
-    font-size: 16px;
-    color: #444;
-    margin: 4px 0 0 0;
-}
-
-.gauge-container {
-    width: 120px;
-    height: 120px;
+/* Línea divisoria */
+.stats-divider {
     position: relative;
-    top: 4rem;
-}
-
-.gauge {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 12px solid #FF8C00;
-    /* color + grosor */
-
-    /* Quita solo una parte de la circunferencia */
-    border-top-color: transparent;
-    /* quita la parte de arriba */
-    border-right-color: transparent;
-    /* quita la parte derecha */
-
-    /* Ajusta la rotación para colocar el hueco donde desees */
-    transform: rotate(135deg);
-}
-
-
-
-/* ========== Sección de códigos de error ========== */
-.trouble-codes-section {
-    position: relative;
-    /* Para que el divider-systems se posicione respecto a este contenedor */
-    bottom: 2rem;
-}
-
-.section-title {
-    font-size: 22px;
-    font-weight: 600;
-    color: #444;
-    margin-bottom: 20px;
-}
-
-.trouble-code-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.trouble-code-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 10px;
-    align-self: stretch;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.40);
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    gap: 10px;
-}
-
-.code-indicator {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    margin-right: 16px;
-}
-
-.code-indicator.critical {
-    background-color: #D50000;
-}
-
-.code-indicator.moderate {
-    background-color: #FF8C00;
-}
-
-.code-indicator.normal {
-    background-color: #00C853;
-}
-
-.code-details {
-    display: flex;
-    gap: 16px;
-}
-
-.code {
-    font-size: 18px;
-    font-weight: 600;
-    color: #444;
-    width: 80px;
-}
-
-.system {
-    font-size: 18px;
-    color: #444;
-}
-
-/* ========== Barra de navegación inferior ========== */
-ion-footer {
-    --background: #ffffff;
-    --border-color: #EEEEEE;
-}
-
-ion-toolbar {
-    --background: #ffffff;
-    --border-color: #EEEEEE;
-    --padding-top: 8px;
-    --padding-bottom: 8px;
-}
-
-.nav-bar {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-}
-
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 8px 0;
-}
-
-.nav-item ion-icon {
-    font-size: 24px;
-    color: #666;
-}
-
-.nav-item span {
-    font-size: 12px;
-    color: #666;
-}
-
-.nav-item.active ion-icon,
-.nav-item.active span {
-    color: #000;
-}
-
-.clear-code-button {
-    /* Grosor y color del borde */
-    --border-width: 2px;
-    --border-color: #000;
-
-    /* Esquinas redondeadas */
-    --border-radius: 8px;
-
-    /* Color del texto y fondo */
-    --color: #444444;
-    --background: #fff;
-
-    /* Tamaño y peso del texto */
-    font-size: 18px;
-    font-weight: 500;
-
-    /* Padding interno para darle amplitud */
-    --padding-start: 1rem;
-    --padding-end: 1rem;
-    --padding-top: 1rem;
-    --padding-bottom: 1rem;
-    padding: 0.5rem;
-
-    /* Otras propiedades */
-    text-transform: none;
-
-    /* Centrado del botón */
-    display: block;
-    margin: 0.5rem auto;
-}
-
-.divider-systems {
-    position: relative;
-    height: 1px;
+    height: 2px;
     background-color: #999999;
     z-index: 1;
     width: 10000px;
-    /* Asegúrate de que ocupe el 100% del ancho */
     right: 20%;
     margin-bottom: 1rem;
+}
+
+/* ====== Secciones ====== */
+.section-block {
+    margin-bottom: 1rem;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #444;
+    margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+    font-size: 16px;
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 0.8rem;
+}
+
+/* ====== Driving Style Row ====== */
+.driving-style-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.driving-text {
+    flex: 1;
+}
+
+.driving-comment {
+    font-size: 16px;
+    font-weight: 500;
+    color: #666;
+}
+
+.driving-gauge {
+    width: 80px;
+    height: 80px;
+    position: relative;
+}
+
+/* Canvas para gráficos */
+.chart-canvas {
+    width: 100% !important;
+    max-width: 300px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Texto con el porcentaje en el gauge */
+.percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    color: #444;
+    font-size: 16px;
 }
 </style>

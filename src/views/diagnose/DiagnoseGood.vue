@@ -68,7 +68,7 @@ function clearCodes() {
 ion-content {
     --background: #ffffff;
     --color: #000000;
-    --padding-top: 0;
+    --padding-top: 1rem;
 }
 
 
@@ -115,7 +115,7 @@ ion-back-button {
     bottom: 44%;
     left: 0;
     right: 0;
-    height: 1px;
+    height: 2px;
     background-color: #999999;
     z-index: -1;
 }
@@ -351,7 +351,7 @@ ion-toolbar {
 
 .divider-systems {
     position: relative;
-    height: 1px;
+    height: 2px;
     background-color: #999999;
     z-index: 1;
     width: 10000px;

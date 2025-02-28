@@ -48,7 +48,7 @@ function confirmHour() { router.push({ path: '/details/appointment/booked', quer
 ion-content {
     --background: #ffffff;
     --color: #000000;
-    --padding-top: 0;
+    --padding-top: 1rem;
 }
 
 /* ---------- Status bar superior ---------- */
@@ -113,7 +113,7 @@ ion-back-button {
     bottom: 44%;
     left: 0;
     right: 0;
-    height: 1px;
+    height: 2px;
     background-color: #999999;
     z-index: -1;
 }
