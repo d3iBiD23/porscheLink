@@ -42,7 +42,7 @@
 
       <!-- Botón de Logout -->
       <ion-button fill="outline" class="logout-button" @click="logout">
-        Logout
+        Log out
       </ion-button>
 
       <!-- Imagen del Taycan con la línea divisoria y logo de Porsche -->
