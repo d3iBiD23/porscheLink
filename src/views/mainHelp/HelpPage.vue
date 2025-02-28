@@ -117,9 +117,6 @@ const step = ref<number>(1);
 /** Llamamos a measureButtonHole() cuando pasamos a step 2 */
 function goToStep2() {
   step.value = 2;
-  nextTick(() => {
-    measureButtonHole();
-  });
 }
 
 function finishTutorial() {
@@ -136,57 +133,6 @@ const activeIndex = ref(0);
 const onSlideChange = (swiper: any) => {
   activeIndex.value = swiper.realIndex;
 };
-
-onMounted(() => {
-  // Cuando se monte el componente, medimos el botón real
-  nextTick(() => {
-    measureButtonHole();
-  });
-});
-
-/**
- * Calcula los rectángulos que cubren todo salvo el área del botón.
- * Se llama cuando pasamos a step 2 o al montar.
- */
-function measureButtonHole() {
-  if (!vehicleButton.value) return;
-
-  const rect = vehicleButton.value.getBoundingClientRect();
-  const screenW = window.innerWidth;
-  const screenH = window.innerHeight;
-
-  // 1) Bloque superior: desde top=0 hasta top=rect.top
-  const topBlock = {
-    top: 0,
-    left: 0,
-    width: screenW,
-    height: rect.top,
-  };
-  // 2) Bloque inferior: desde top=rect.bottom hasta bottom de pantalla
-  const bottomBlock = {
-    top: rect.bottom,
-    left: 0,
-    width: screenW,
-    height: screenH - rect.bottom,
-  };
-  // 3) Bloque izquierdo: altura = rect.height, cubre desde rect.top hasta rect.bottom
-  const leftBlock = {
-    top: rect.top,
-    left: 0,
-    width: rect.left,
-    height: rect.height,
-  };
-  // 4) Bloque derecho
-  const rightBlock = {
-    top: rect.top,
-    left: rect.right,
-    width: screenW - rect.right,
-    height: rect.height,
-  };
-
-  overlayBlocks.value = [topBlock, bottomBlock, leftBlock, rightBlock];
-}
-
 
 function goToOverview() {
   router.push('/details/overview');
@@ -512,9 +458,11 @@ const goToFunctions = () => {
 }
 
 .cover-block {
-  position: fixed; /* Para que no se mueva con scroll */
+  position: fixed;
+  /* Para que no se mueva con scroll */
   background-color: rgba(0, 0, 0, 0.9);
-  pointer-events: auto; /* Bloquea clics */
+  pointer-events: auto;
+  /* Bloquea clics */
   z-index: 10000;
 }
 

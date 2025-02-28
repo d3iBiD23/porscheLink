@@ -4,56 +4,52 @@
       <!-- Encabezado con botón de regreso y nombre de usuario -->
       <div class="header">
         <ion-buttons slot="start" class="back-button">
-          <ion-back-button default-href="/homepage" text=""></ion-back-button>
+          <ion-back-button default-href="/homepage"></ion-back-button>
         </ion-buttons>
         <div class="profile-section">
           <ion-avatar class="avatar">
-            <!-- Ajusta esta ruta o reemplaza por tu imagen de avatar -->
             <img src="/assets/user_avatar.svg" alt="Avatar" />
           </ion-avatar>
           <h2>John Doe</h2>
-
         </div>
       </div>
+
       <div class="divider"></div>
 
       <!-- Sección principal de opciones de cuenta -->
       <ion-list class="menu-options">
         <ion-item>
-          <img src="/assets/UserCircle.svg" alt="UserCircle" class="userCircle">
+          <img src="/assets/UserCircle.svg" alt="UserCircle" class="userCircle" />
           <ion-label>My Account</ion-label>
         </ion-item>
         <ion-item>
-          <img src="/assets/EnvelopeSimple.svg" alt="EnvelopeSimple" class="envelopeSimple">
+          <img src="/assets/EnvelopeSimple.svg" alt="EnvelopeSimple" class="envelopeSimple" />
           <ion-label>Notifications</ion-label>
         </ion-item>
         <ion-item>
-          <img src="/assets/Question.svg" alt="Question" class="question">
+          <img src="/assets/Question.svg" alt="Question" class="question" />
           <ion-label>Contact And Help</ion-label>
         </ion-item>
       </ion-list>
 
       <!-- Sección de políticas / textos legales -->
       <ion-list class="legal-options">
-        <ion-item>
-          <ion-label>Privacy Policy</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Legal Notice</ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>Legal</ion-label>
-        </ion-item>
+        <ion-item><ion-label>Privacy Policy</ion-label></ion-item>
+        <ion-item><ion-label>Legal Notice</ion-label></ion-item>
+        <ion-item><ion-label>Legal</ion-label></ion-item>
       </ion-list>
+
+      <!-- Botón de Logout -->
+      <ion-button fill="outline" class="logout-button" @click="logout">
+        Logout
+      </ion-button>
 
       <!-- Imagen del Taycan con la línea divisoria y logo de Porsche -->
       <div class="car-container">
-        <!-- Ajusta la ruta de tu imagen del Taycan -->
         <img src="/assets/imagesMainScreen/taycan/taycanImage.png" alt="Porsche Taycan" class="car-image" />
       </div>
 
       <div class="porsche-logo">
-        <!-- Ajusta la ruta de tu logotipo de Porsche -->
         <img src="/assets/logos/porscheLogo_account.svg" alt="Porsche" class="logo" />
       </div>
     </ion-content>
@@ -69,32 +65,41 @@ import {
   IonAvatar,
   IonList,
   IonItem,
-  IonLabel
+  IonLabel,
+  IonButton
 } from '@ionic/vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+/** Maneja la acción de logout y navega a /login */
+function logout() {
+  // Lógica adicional (limpiar tokens, etc.) si lo deseas
+  router.push('/login');
+}
 </script>
 
 <style scoped>
-/* Fondo y color de texto */
 ion-content {
   --background: #ffffff;
   --color: #000000;
 }
 
+/* Íconos de menú */
 .question,
 .envelopeSimple,
 .userCircle {
   padding: 0.5rem;
 }
 
-/* Ajustes del header y del botón de regreso */
+/* Encabezado y botón de regreso */
 .header {
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 1rem 0;
 }
 
 .back-button {
@@ -113,7 +118,6 @@ ion-content {
   flex-direction: column;
   align-items: center;
   margin-top: 2.5rem;
-  /* Para que "John Doe" aparezca un poco más abajo */
 }
 
 .profile-section .avatar {
@@ -131,11 +135,13 @@ ion-content {
 .menu-options,
 .legal-options {
   background-color: white;
-  margin: 1rem 1rem;
+  margin: 1rem;
+  /* Margen lateral e inferior */
 }
 
 .legal-options {
   margin: 0 1.5rem;
+  /* Este ajusta la lista legal un poco distinto */
 }
 
 ion-item {
@@ -146,13 +152,31 @@ ion-item {
   color: #444444;
 }
 
-
-/* Último item sin borde inferior (opcional) */
 ion-item:last-child {
   border-bottom: none;
 }
 
-/* Contenedor e imagen del Taycan */
+/* Botón Logout */
+.logout-button {
+  display: block;
+  margin: 2.5rem;
+  margin-bottom: auto;
+  /* Ajustar ancho para compensar el margin horizontal */
+  --border-width: 2px;
+  --border-color: #000;
+  --border-radius: 8px;
+  --background: #fff;
+  --color: #fd2a2a;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: none;
+  --padding-start: 0.3rem;
+  --padding-end: 0.3rem;
+  --padding-top: 0.6rem;
+  --padding-bottom: 0.6rem;
+}
+
+/* Imagen del Taycan */
 .car-container {
   position: relative;
   bottom: 2.5rem;
@@ -166,15 +190,15 @@ ion-item:last-child {
   object-fit: contain;
 }
 
-/* Línea divisoria gris detrás del coche */
+/* Divider */
 .divider {
   position: relative;
   height: 2px;
-  background: rgba(0, 0, 0, 0.60);
+  background: rgba(0, 0, 0, 0.6);
   z-index: -1;
 }
 
-/* Logo de Porsche centrado debajo */
+/* Logo Porsche */
 .porsche-logo {
   text-align: center;
   margin-top: 1.5rem;

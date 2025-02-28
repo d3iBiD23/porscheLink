@@ -34,8 +34,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { IonPage, IonContent, IonBackButton, IonButtons, IonButton, IonDatetime, IonIcon } from '@ionic/vue';
-import { wifiOutline } from 'ionicons/icons';
+import { IonPage, IonContent, IonBackButton, IonButtons, IonButton, IonDatetime } from '@ionic/vue';
 import router from '@/router';
 
 const selectedDate = ref<string>('');

@@ -71,20 +71,17 @@ import { IonButton } from '@ionic/vue';
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    /* Cambiado a flex-start */
     gap: 16px;
-    /* Aseguramos que el gap funcione */
-
     width: 90%;
     max-width: 500px;
     margin: 0 auto 16px;
 
+    /* Estado NORMAL */
     --border-width: 2px;
     --border-color: #000;
     --border-radius: 8px;
-
-    --color: #444;
     --background: #fff;
+    --color: #444;
 
     font-size: 18px;
     font-weight: 500;
@@ -94,6 +91,25 @@ import { IonButton } from '@ionic/vue';
     --padding-end: 16px;
     --padding-top: 12px;
     --padding-bottom: 12px;
+
+    /* Para que la transición sea suave al cambiar de color */
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* Estado HOVER */
+.function-button:hover {
+    --background: #eee;
+    /* Gris claro */
+    --color: #444;
+    /* Mantén el color de texto */
+}
+
+/* Estado PRESSED (al hacer click) */
+.function-button:active {
+    --background: #000;
+    /* Fondo negro */
+    --color: #fff;
+    /* Texto blanco */
 }
 
 .function-button span {

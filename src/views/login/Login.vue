@@ -24,7 +24,7 @@
                     Forgot your password?
                 </ion-text>
 
-                <ion-button expand="block" class="login-button" @click="goToMainScreen">
+                <ion-button expand="block" class="login-button" @click="startApp">
                     Login
                 </ion-button>
             </form>
@@ -46,8 +46,8 @@ const password = ref('')
 
 const router = useRouter();
 
-const goToMainScreen = () => {
-    router.push('/homepage');
+const startApp = () => {
+    router.push('/help');
 };
 
 const goToRegisterScreen = () => {
