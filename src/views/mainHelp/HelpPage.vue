@@ -1,6 +1,8 @@
 <template>
   <ion-page>
-      <ion-content>
+    <ion-content>
+      <!-- Layout real (MainScreen) debajo del tutorial -->
+      <div class="main-layout">
         <ion-text class="last-updated">Last updated: 5 minutes ago</ion-text>
         <div class="car-container">
           <h1 class="car-title">{{ getCarTitle() }}</h1>
@@ -8,16 +10,18 @@
             class="car-slider">
             <swiper-slide v-for="car in cars" :key="car.id">
               <div class="car-item">
-                <img :src="car.lineLeft" alt="line-left" class="line-left">
-                <img :src="car.modelLogo" :alt="`${car.name} Model logo`" class="car-model">
-                <img :src="car.lineRight" alt="line-right" class="line-right">
-                <img :src="car.image" :alt="car.name" class="car-image">
+                <img :src="car.lineLeft" alt="line-left" class="line-left" />
+                <img :src="car.modelLogo" :alt="`${car.name} Model logo`" class="car-model" />
+                <img :src="car.lineRight" alt="line-right" class="line-right" />
+                <img :src="car.image" :alt="car.name" class="car-image" />
               </div>
             </swiper-slide>
           </swiper>
 
           <div class="mid-container">
-            <ion-button expand="block" fill="outline" class="details-button" @click="goToOverview">
+            <!-- Botón original Vehicle Details -->
+            <ion-button expand="block" fill="outline" class="details-button" ref="vehicleButton" @click="goToOverview"
+              :class="{ highlight: step === 2 }">
               Vehicle Details
             </ion-button>
 
@@ -28,15 +32,15 @@
                   <span class="range">553km</span>
                 </div>
                 <div class="charging-status">
-                  <img src="/assets/imagesMainScreen/ChargingStation.svg" alt="ChargingStation" class="battery-icon">
+                  <img src="/assets/imagesMainScreen/ChargingStation.svg" alt="ChargingStation" class="battery-icon" />
                   <span class="text-battery">Charging plug not connected</span>
                 </div>
                 <div class="charging-progress">
-                  <img src="/assets/imagesMainScreen/battery_gradient.svg" alt="battery_gradient">
+                  <img src="/assets/imagesMainScreen/battery_gradient.svg" alt="battery_gradient" />
                 </div>
                 <div class="status-icons">
                   <div class="headlight-wrapper">
-                    <img src="/assets/imagesMainScreen/Headlights.svg" alt="Headlights" @click.stop="goToFunctions">
+                    <img src="/assets/imagesMainScreen/Headlights.svg" alt="Headlights" @click.stop="goToFunctions" />
                   </div>
                   <div class="separator"></div>
                   <div class="key-wrapper" @click.stop="goToFunctions">
@@ -50,95 +54,225 @@
               <ion-button v-for="action in actions" :key="action.name" fill="clear" class="action-button"
                 @click="handleAction(action)">
                 <div class="button-content">
-                  <img :src="action.icon" :alt="action.name">
+                  <img :src="action.icon" :alt="action.name" />
                   <span>{{ action.name }}</span>
                 </div>
               </ion-button>
             </div>
           </div>
         </div>
-      </ion-content>
+      </div>
+      <!-- Fin layout real -->
+
+      <!-- Tutorial Overlay: Bloquea todos los clics del layout de abajo -->
+      <!-- Paso 1: Bloquea todo y muestra mensaje de bienvenida -->
+      <div v-if="step === 1" class="overlay-container">
+        <div class="full-overlay"></div>
+        <div class="tutorial-content">
+          <p class="tutorial-text">
+            Welcome To PorscheLink. Press Next To See What's Coming.
+          </p>
+          <ion-button @click="goToStep2" class="next-button">
+            Next
+          </ion-button>
+        </div>
+      </div>
+
+      <!-- Tutorial Overlay Paso 2: Bloquea todo excepto el botón simulado -->
+      <!-- Paso 2: Bloquea todo excepto el área del botón real -->
+      <div v-else-if="step === 2" class="overlay-container">
+        <div class="full-overlay" />
+        <!-- Rectángulos que cubren el resto de la pantalla -->
+        <div v-for="(block, index) in overlayBlocks" :key="index" class="cover-block" :style="{
+          top: block.top + 'px',
+          left: block.left + 'px',
+          width: block.width + 'px',
+          height: block.height + 'px',
+        }"></div>
+        <div class="tutorial-content step2">
+          <p class="tutorial-text">
+            Click In The Start Button To Check Your Vehicle Details.
+          </p>
+          <ion-button @click="finishTutorial" class="next-button">
+            Start
+          </ion-button>
+        </div>
+      </div>
+    </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, nextTick } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { IonButton, IonContent, IonPage, IonText } from '@ionic/vue';
+import { IonPage, IonContent, IonButton, IonText, IonBackButton, IonButtons } from '@ionic/vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Pagination } from "swiper/modules";
-import { ref } from "vue";
+import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+/* Tutorial state: step 0 = no tutorial; 1 = primer overlay; 2 = segundo overlay */
+const step = ref<number>(1);
+
+/** Llamamos a measureButtonHole() cuando pasamos a step 2 */
+function goToStep2() {
+  step.value = 2;
+  nextTick(() => {
+    measureButtonHole();
+  });
+}
+
+function finishTutorial() {
+  router.push('/details/overview');
+}
+
+/* Layout variables y funciones */
 const router = useRouter();
 const route = useRoute();
 
+const vehicleButton = ref<HTMLElement | null>(null);
+const overlayBlocks = ref<{ top: number; left: number; width: number; height: number }[]>([]);
 const activeIndex = ref(0);
-
 const onSlideChange = (swiper: any) => {
   activeIndex.value = swiper.realIndex;
 };
 
-const goToOverview = () => {
+onMounted(() => {
+  // Cuando se monte el componente, medimos el botón real
+  nextTick(() => {
+    measureButtonHole();
+  });
+});
+
+/**
+ * Calcula los rectángulos que cubren todo salvo el área del botón.
+ * Se llama cuando pasamos a step 2 o al montar.
+ */
+function measureButtonHole() {
+  if (!vehicleButton.value) return;
+
+  const rect = vehicleButton.value.getBoundingClientRect();
+  const screenW = window.innerWidth;
+  const screenH = window.innerHeight;
+
+  // 1) Bloque superior: desde top=0 hasta top=rect.top
+  const topBlock = {
+    top: 0,
+    left: 0,
+    width: screenW,
+    height: rect.top,
+  };
+  // 2) Bloque inferior: desde top=rect.bottom hasta bottom de pantalla
+  const bottomBlock = {
+    top: rect.bottom,
+    left: 0,
+    width: screenW,
+    height: screenH - rect.bottom,
+  };
+  // 3) Bloque izquierdo: altura = rect.height, cubre desde rect.top hasta rect.bottom
+  const leftBlock = {
+    top: rect.top,
+    left: 0,
+    width: rect.left,
+    height: rect.height,
+  };
+  // 4) Bloque derecho
+  const rightBlock = {
+    top: rect.top,
+    left: rect.right,
+    width: screenW - rect.right,
+    height: rect.height,
+  };
+
+  overlayBlocks.value = [topBlock, bottomBlock, leftBlock, rightBlock];
+}
+
+
+function goToOverview() {
   router.push('/details/overview');
-};
+}
 
 const getCarTitle = () => {
-  return activeIndex.value === 0 ? "My Taycan Turbo S" : "My 911 GT3 RS";
+  return activeIndex.value === 0 ? 'My Taycan Turbo S' : 'My 911 GT3 RS';
 };
 
 const cars = [
   {
     id: 1,
-    name: "Taycan Turbo S",
-    lineLeft: "/assets/imagesMainScreen/taycan/lineLeftTaycan.svg",
-    modelLogo: "/assets/imagesMainScreen/taycan/Taycan.svg",
-    lineRight: "/assets/imagesMainScreen/taycan/lineRightTaycan.svg",
-    image: "/assets/imagesMainScreen/taycan/taycanImage.png",
+    name: 'Taycan Turbo S',
+    lineLeft: '/assets/imagesMainScreen/taycan/lineLeftTaycan.svg',
+    modelLogo: '/assets/imagesMainScreen/taycan/Taycan.svg',
+    lineRight: '/assets/imagesMainScreen/taycan/lineRightTaycan.svg',
+    image: '/assets/imagesMainScreen/taycan/taycanImage.png',
   },
   {
     id: 2,
-    name: "911 GT3 RS",
-    lineLeft: "/assets/imagesMainScreen/gt3/lineLeftGt3.svg",
-    modelLogo: "/assets/imagesMainScreen/gt3/911gt3rs.svg",
-    lineRight: "/assets/imagesMainScreen/gt3/lineRightGt3.svg",
-    image: "/assets/imagesMainScreen/gt3/porschegt3.png",
+    name: '911 GT3 RS',
+    lineLeft: '/assets/imagesMainScreen/gt3/lineLeftGt3.svg',
+    modelLogo: '/assets/imagesMainScreen/gt3/911gt3rs.svg',
+    lineRight: '/assets/imagesMainScreen/gt3/lineRightGt3.svg',
+    image: '/assets/imagesMainScreen/gt3/porschegt3.png',
   },
 ];
 
 const actions = [
-  { name: "STATIONS", icon: "/assets/imagesMainScreen/ChargingStation.svg" },
-  { name: "STATS", icon: "/assets/imagesMainScreen/ChartLine.svg" },
-  { name: "OBD", icon: "/assets/imagesMainScreen/Engine.svg" },
+  { name: 'STATIONS', icon: '/assets/imagesMainScreen/ChargingStation.svg' },
+  { name: 'STATS', icon: '/assets/imagesMainScreen/ChartLine.svg' },
+  { name: 'OBD', icon: '/assets/imagesMainScreen/Engine.svg' },
 ];
 
-const handleAction = (action: { name: string, icon: string }) => {
+const handleAction = (action: { name: string; icon: string }) => {
   switch (action.name) {
-    case "STATIONS":
+    case 'STATIONS':
       router.push('/maps');
       break;
-    case "STATS":
+    case 'STATS':
       router.push('stats');
       break;
-    case "OBD":
+    case 'OBD':
       router.push({ path: '/details/overview', query: { tab: 'repair' } });
       break;
     default:
-      console.warn("Accion no reconocida.");
+      console.warn('Accion no reconocida.');
   }
 };
 
 const goToFunctions = () => {
-  // Obtenemos la ruta y query actuales
   router.replace({
     path: '/details/overview',
     query: { ...route.query, tab: 'functions', _force: Date.now() }
   });
 };
-
 </script>
 
 <style scoped>
+/* ================== Layout Principal ================== */
+.main-layout {
+  position: relative;
+  z-index: 1;
+}
+
+/* Estilos del layout real (copiados de tu código) */
+.last-updated {
+  display: block;
+  padding: 8px 16px;
+  margin-left: 20px;
+  margin-top: 30px;
+  color: #444444;
+  font-size: 14px;
+}
+
+.car-container {
+  padding: 16px;
+}
+
+.car-title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 1px;
+  margin-left: 20px;
+}
+
 .car-slider {
   width: 100%;
   height: 260px;
@@ -175,7 +309,7 @@ const goToFunctions = () => {
   top: 50%;
   transform: translateY(-50%);
   width: 70px;
-  opacity: 75%;
+  opacity: 0.75;
 }
 
 .line-left {
@@ -196,72 +330,28 @@ const goToFunctions = () => {
   opacity: 1;
 }
 
-.key-wrapper {
-  /* Para que sea un bloque/inline-block con padding */
-  display: inline-flex;
-  /* o inline-block */
-  align-items: center;
-  justify-content: center;
-  padding: 2px;
-  /* Aumenta según necesites la zona clicable */
-  cursor: pointer;
-  /* Indica que se puede hacer clic */
-}
-
-.headlight-wrapper {
-  cursor: pointer;
-}
-
-.key {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-}
-
-.separator {
-  width: 1.5px;
-  height: 24px;
-  background: rgba(0, 0, 0, 0.60);
-  margin: 0 12px;
-}
-
-.text-battery {
-  font-size: 15px;
-}
-
 .mid-container {
   margin-top: 40px;
 }
 
-.last-updated {
-  display: block;
-  padding: 8px 16px;
-  margin-left: 20px;
-  margin-top: 30px;
-  color: #444444;
-  font-size: 14px;
-}
-
-.car-container {
-  padding: 16px;
-}
-
-.car-title {
-  font-size: 30px;
-  font-weight: bold;
-  margin-top: 1px;
-  margin-left: 20px;
-}
-
 .details-button {
+  position: relative;
   --border-radius: 8px;
   --border-color: #444;
   --color: #1E1E1E;
+  background-color: white;
   font-size: 20px;
   margin: 16px 0;
   text-transform: none;
   font-family: 'Inter', sans-serif;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.highlight {
+  box-shadow: 0 0 0 4px #ffffff, 0 0 8px 6px rgba(255, 255, 255, 0.5);
+  z-index: 2;
+  /* Para que se vea por encima de otros elementos del layout */
+  position: relative;
 }
 
 .battery-status {
@@ -284,6 +374,10 @@ const goToFunctions = () => {
   gap: 8px;
 }
 
+.step2 {
+  top: 120px;
+}
+
 .percentage {
   font-size: 24px;
   font-weight: bold;
@@ -300,11 +394,45 @@ const goToFunctions = () => {
   color: #1E1E1E;
 }
 
+.charging-progress img {
+  max-width: 100%;
+  height: auto;
+}
+
 .status-icons {
   display: flex;
   justify-content: space-between;
   margin-top: 8px;
   padding: 0 50px;
+}
+
+.headlight-wrapper {
+  cursor: pointer;
+}
+
+.key-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.key {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.separator {
+  width: 1.5px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.6);
+  margin: 0 12px;
+}
+
+.text-battery {
+  font-size: 15px;
 }
 
 .action-buttons {
@@ -314,9 +442,7 @@ const goToFunctions = () => {
   margin-top: 16px;
   width: 100%;
   max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 30px;
+  margin: 0 auto 30px auto;
 }
 
 .action-button {
@@ -346,11 +472,126 @@ const goToFunctions = () => {
   gap: 12px;
 }
 
-:deep(ion-content) {
-  --background: white;
-  --color: #1E1E1E;
-  font-family: 'Inter', sans-serif;
-  font-weight: bold;
+/* ================== Tutorial Overlay ================== */
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Capa oscura */
+.full-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  pointer-events: auto;
+}
+
+/* Contenido del tutorial */
+.tutorial-content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  /* Encima de la capa oscura */
+  pointer-events: auto;
+  /* Permite clicks en este contenido */
+  text-align: center;
+  color: white;
+  padding: 1rem;
+}
+
+.cover-block {
+  position: fixed; /* Para que no se mueva con scroll */
+  background-color: rgba(0, 0, 0, 0.9);
+  pointer-events: auto; /* Bloquea clics */
+  z-index: 10000;
+}
+
+.tutorial-text {
+  color: #FFF;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: normal;
+  padding: 1rem;
+  text-align: left;
+  flex-direction: column;
+  margin-bottom: 100%;
+}
+
+.next-button {
+  align-self: flex-end;
+  /* Para que el botón quede debajo del texto */
+  --background: #000;
+  --color: #fff;
+  --border-radius: 8px;
+  --padding-start: 2rem;
+  --padding-end: 2rem;
+  --padding-top: 1rem;
+  --padding-bottom: 1rem;
+  text-transform: none;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+/* En step 2, para bloquear todo excepto el botón duplicado */
+.click-blocker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+
+/* Botón simulado */
+.simulated-button-container {
+  position: absolute;
+  top: 50%;
+  /* Ajusta esta posición para que coincida con el botón real */
+  left: 50%;
+  /* Ajusta esta posición para que coincida con el botón real */
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.simulated-button {
+  --border-radius: 8px;
+  --border-color: #444;
+  --color: #1E1E1E;
+  background-color: white;
+  font-size: 20px;
+  text-transform: none;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+}
+
+/* Opcional: posicionar el texto del tutorial en step 2 */
+.second-step {
+  bottom: 20%;
+}
+
+/* ================== Fin Tutorial Overlay ================== */
+
+/* ================== Layout Extras ================== */
+.stats-divider {
+  position: relative;
+  height: 2px;
+  background-color: #999999;
+  z-index: 1;
+  width: 10000px;
+  right: 20%;
+  margin-bottom: 1rem;
+}
 </style>

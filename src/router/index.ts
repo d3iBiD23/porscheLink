@@ -35,6 +35,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/account/AccountPage.vue"),
   },
   {
+    path: "/help",
+    component: () => import("@/views/mainHelp/HelpPage.vue"),
+  },
+  {
     path: "/details",
     component: TabsPage,
     children: [
@@ -53,10 +57,6 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "accountpage",
         component: () => import("@/views/account/AccountPage.vue"),
-      },
-      {
-        path: "help",
-        component: () => import("@/views/mainHelp/HelpPage.vue"),
       },
       {
         path: "stats",

@@ -13,7 +13,7 @@
             <ion-icon :icon="mapOutline" />
             <ion-label>Map</ion-label>
           </ion-tab-button>
-          <ion-tab-button tab="help" href="/details/help">
+          <ion-tab-button tab="help" href="/help">
             <ion-icon :icon="helpCircleOutline" />
             <ion-label>Help</ion-label>
           </ion-tab-button>
@@ -28,7 +28,7 @@
             <ion-icon :icon="homeOutline" />
             <ion-label>Home</ion-label>
           </ion-tab-button>
-          <ion-tab-button tab="help" href="/details/help">
+          <ion-tab-button tab="help" href="/help">
             <ion-icon :icon="helpCircleOutline" />
             <ion-label>Help</ion-label>
           </ion-tab-button>
