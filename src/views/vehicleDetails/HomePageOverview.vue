@@ -74,9 +74,12 @@ ion-toolbar {
   --color: black;
 }
 
+ion-title {
+  padding-top: 2rem;
+}
+
 .porscheLogo {
   display: block;
-  margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
 }

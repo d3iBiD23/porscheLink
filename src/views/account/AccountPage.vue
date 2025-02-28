@@ -74,7 +74,6 @@ const router = useRouter();
 
 /** Maneja la acción de logout y navega a /login */
 function logout() {
-  // Lógica adicional (limpiar tokens, etc.) si lo deseas
   router.push('/login');
 }
 </script>
@@ -160,7 +159,6 @@ ion-item:last-child {
 .logout-button {
   display: block;
   margin: 2.5rem;
-  margin-bottom: auto;
   /* Ajustar ancho para compensar el margin horizontal */
   --border-width: 2px;
   --border-color: #000;

@@ -2,8 +2,7 @@
   <ion-page>
     <ion-tabs>
       <ion-router-outlet></ion-router-outlet>
-      <ion-tab-bar slot="bottom">
-
+      <ion-tab-bar v-if="showTabBar" slot="bottom">
         <template v-if="onMainScreen">
           <ion-tab-button tab="accountpage" href="/account">
             <ion-icon :icon="personOutline" />
@@ -41,10 +40,20 @@
 <script setup lang="ts">
 import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonIcon, IonPage, IonRouterOutlet } from '@ionic/vue';
 import { helpCircleOutline, homeOutline, mapOutline, personOutline } from 'ionicons/icons';
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-const route = useRoute()
-const onMainScreen = computed(() => route.path === '/homepage')
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+// Computada para determinar si estamos en la "pantalla principal"
+const onMainScreen = computed(() => route.path === '/homepage');
+
+const noTabPaths = ['/details/accountpage', '/account']
+
+const showTabBar = computed(() => {
+  return !noTabPaths.includes(route.path)
+})
+
 </script>
 <style scoped>
 ion-tab-bar {
@@ -61,5 +70,4 @@ ion-tab-button {
   color: black;
   font-weight: bolder;
 }
-
 </style>
