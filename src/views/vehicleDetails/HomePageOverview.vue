@@ -94,10 +94,13 @@ ion-title {
 
 .custom-segment {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;   /* Centra horizontalmente */
+  align-items: center;       /* Centra verticalmente */
+  gap: 2rem;                 /* Espacio entre ítems */
   padding: 10px 0;
   border-bottom: 1px solid #eee;
 }
+
 
 .segment-button {
   display: flex;
