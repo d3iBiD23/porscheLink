@@ -290,7 +290,6 @@ const goToFunctions = () => {
   margin: 16px 0;
   text-transform: none;
   font-family: 'Inter', sans-serif;
-  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
 }
 
 .highlight {

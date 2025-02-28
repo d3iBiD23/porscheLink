@@ -256,15 +256,33 @@ const goToFunctions = () => {
 }
 
 .details-button {
-    --border-radius: 8px;
-    --border-color: #444;
-    --color: #1E1E1E;
-    font-size: 20px;
-    margin: 16px 0;
-    text-transform: none;
-    font-family: 'Inter', sans-serif;
-    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+  /* Ajusta grosor y color del borde */
+  --border-width: 2px;
+  --border-color: #000;
+  --border-style: solid;
+
+  /* Ajusta el radio de esquina */
+  --border-radius: 8px;
+
+  /* Asegura que el fondo sea transparente 
+     (o del color exacto que coincida con tu fondo) */
+  --background: transparent;
+  --background-focused: transparent;
+  --background-hover: transparent;
+  --background-activated: transparent;
+
+  /* Quita el efecto de “ripple” si no lo quieres */
+  --ripple-color: transparent;
+
+  /* Color del texto */
+  --color: #444;
+  /* Tamaño de fuente, márgenes, etc. */
+  font-size: 20px;
+  margin: 16px 0;
+  text-transform: none;
+  font-family: 'Inter', sans-serif;
 }
+
 
 .battery-status {
     border: 2px solid #444;
