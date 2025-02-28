@@ -1,6 +1,7 @@
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <!-- Añadimos la clase "no-scroll" para forzar sin scroll -->
+    <ion-content :fullscreen="true" class="no-scroll">
       <!-- Encabezado con botón de regreso y nombre de usuario -->
       <div class="header">
         <ion-buttons slot="start" class="back-button">
@@ -79,9 +80,25 @@ function logout() {
 </script>
 
 <style scoped>
+/* Desactiva el scroll en ion-content */
+.no-scroll {
+  --overflow: hidden;
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* Ajustes generales */
 ion-content {
   --background: #ffffff;
   --color: #000000;
+}
+
+/* Ajustes de imágenes para que no crezcan de más */
+.car-image,
+.logo {
+  position: relative;  
+  max-width: 100%;
+
 }
 
 /* Íconos de menú */
@@ -135,12 +152,10 @@ ion-content {
 .legal-options {
   background-color: white;
   margin: 1rem;
-  /* Margen lateral e inferior */
 }
 
 .legal-options {
   margin: 0 1.5rem;
-  /* Este ajusta la lista legal un poco distinto */
 }
 
 ion-item {
@@ -157,9 +172,8 @@ ion-item:last-child {
 
 /* Botón Logout */
 .logout-button {
-  display: block;
-  margin: 2.5rem;
-  /* Ajustar ancho para compensar el margin horizontal */
+  align-items: flex-start;
+  margin-left: 2rem;
   --border-width: 2px;
   --border-color: #000;
   --border-radius: 8px;
@@ -168,24 +182,14 @@ ion-item:last-child {
   font-size: 18px;
   font-weight: 600;
   text-transform: none;
-  --padding-start: 0.3rem;
-  --padding-end: 0.3rem;
-  --padding-top: 0.6rem;
-  --padding-bottom: 0.6rem;
 }
 
 /* Imagen del Taycan */
 .car-container {
   position: relative;
-  bottom: 2.5rem;
+  bottom: 10rem;
   left: 30%;
   text-align: center;
-}
-
-.car-image {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
 }
 
 /* Divider */
@@ -196,14 +200,9 @@ ion-item:last-child {
   z-index: -1;
 }
 
-/* Logo Porsche */
 .porsche-logo {
-  text-align: center;
-  margin-top: 1.5rem;
-}
-
-.logo {
   position: relative;
-  bottom: 3rem;
+  bottom: 10rem;
+  text-align: center;
 }
 </style>

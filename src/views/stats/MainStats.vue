@@ -339,7 +339,7 @@ ion-back-button {
     bottom: 44%;
     left: 0;
     right: 0;
-    height: 1px;
+    height: 2px;
     background-color: #999999;
     z-index: -1;
 }
