@@ -1,67 +1,114 @@
 <template>
-  <IonPage>
-    <IonHeader>
-      <IonToolbar>
-        <IonTitle>
-          <img src="\assets\logos\porscheLogo.svg" alt="porscheLogo" class="porscheLogo">
-        </IonTitle>
-      </IonToolbar>
-      <IonToolbar>
+  <ion-page>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>
+          <img src="/assets/logos/porscheLogo.svg" alt="porscheLogo" class="porscheLogo" />
+        </ion-title>
+      </ion-toolbar>
+      <ion-toolbar>
         <h1 class="car-title">My Taycan Turbo S</h1>
-      </IonToolbar>
-      <IonToolbar>
+      </ion-toolbar>
+      <ion-toolbar>
         <div class="custom-segment">
           <div v-for="tab in tabs" :key="tab.value" class="segment-button"
             :class="{ active: selectedTab === tab.value }" @click="updateTab(tab.value)">
             <ion-icon :icon="tab.icon" />
             <span>{{ tab.label }}</span>
           </div>
-
         </div>
-      </IonToolbar>
-    </IonHeader>
+      </ion-toolbar>
+    </ion-header>
 
-    <IonContent>
-      <!-- Contenido dinámico basado en la pestaña seleccionada -->
-      <div v-if="selectedTab === 'details'">
-        <DetailsContent />
-      </div>
-      <div v-if="selectedTab === 'repair'">
-        <RepairContent />
-      </div>
-      <div v-if="selectedTab === 'functions'">
-        <FunctionsContent />
-      </div>
-    </IonContent>
-  </IonPage>
+    <ion-content>
+      <!-- Swiper para permitir swipe horizontal -->
+      <swiper :modules="[Pagination]" @swiper="onSwiper" @slideChange="onSlideChange">
+        <!-- Slide para Details -->
+        <swiper-slide>
+          <DetailsContent />
+        </swiper-slide>
+        <!-- Slide para Repair -->
+        <swiper-slide>
+          <RepairContent />
+        </swiper-slide>
+        <!-- Slide para Functions -->
+        <swiper-slide>
+          <FunctionsContent />
+        </swiper-slide>
+      </swiper>
+    </ion-content>
+  </ion-page>
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonIcon } from '@ionic/vue';
-import { eyeOutline, constructOutline, keyOutline } from 'ionicons/icons';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+// Importa tus componentes
 import DetailsContent from '@/components/DetailsContent.vue';
 import RepairContent from '@/components/RepairContent.vue';
 import FunctionsContent from '@/components/FunctionsContent.vue';
-import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 
-const route = useRoute();
+// Importa los iconos de Ionicons
+import { eyeOutline, constructOutline, keyOutline } from 'ionicons/icons';
+
 const router = useRouter();
-const selectedTab = computed(() => route.query.tab || 'details');
+const route = useRoute();
 
+// Definición de las pestañas
 const tabs = [
-  { label: 'Details', value: 'details', icon: eyeOutline },
-  { label: 'Repair', value: 'repair', icon: constructOutline },
-  { label: 'Functions', value: 'functions', icon: keyOutline }
+  { label: 'Details', value: 'details', icon: eyeOutline, index: 0 },
+  { label: 'Repair', value: 'repair', icon: constructOutline, index: 1 },
+  { label: 'Functions', value: 'functions', icon: keyOutline, index: 2 },
 ];
 
-const updateTab = (newTab: string) => {
-  router.replace({
-    path: '/details/overview',
-    query: { ...route.query, tab: newTab, _force: Date.now() }
-  });
-};
+// La pestaña seleccionada se inicializa con el query param (o "details" por defecto)
+const selectedTab = ref((route.query.tab as string) || 'details');
 
+// Declaramos una variable para almacenar la instancia real de Swiper
+const swiperInstance = ref<any>(null);
+
+// Capturamos la instancia de Swiper
+function onSwiper(swiper: any) {
+  swiperInstance.value = swiper;
+}
+
+// Si el query param cambia, actualizamos la pestaña y movemos el Swiper
+watch(
+  () => route.query.tab,
+  (newVal) => {
+    if (newVal) {
+      selectedTab.value = newVal as string;
+      const tab = tabs.find(t => t.value === newVal);
+      if (tab && swiperInstance.value) {
+        swiperInstance.value.slideTo(tab.index);
+      }
+    }
+  }
+);
+
+// Al hacer swipe se actualiza el estado y el query param
+function onSlideChange(swiper: any) {
+  const newIndex = swiper.realIndex;
+  const newTab = tabs.find(t => t.index === newIndex)?.value || 'details';
+  selectedTab.value = newTab;
+  router.replace({ path: '/details/overview', query: { ...route.query, tab: newTab, _force: Date.now() } });
+}
+
+// Al hacer clic en una pestaña, actualizamos la variable y movemos el Swiper
+function updateTab(newTab: string) {
+  selectedTab.value = newTab;
+  const tab = tabs.find(t => t.value === newTab);
+  if (tab && swiperInstance.value) {
+    swiperInstance.value.slideTo(tab.index);
+  }
+  router.replace({ path: '/details/overview', query: { ...route.query, tab: newTab, _force: Date.now() } });
+}
 </script>
 
 <style scoped>
@@ -94,13 +141,12 @@ ion-title {
 
 .custom-segment {
   display: flex;
-  justify-content: center;   /* Centra horizontalmente */
-  align-items: center;       /* Centra verticalmente */
-  gap: 2rem;                 /* Espacio entre ítems */
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
   padding: 10px 0;
   border-bottom: 1px solid #eee;
 }
-
 
 .segment-button {
   display: flex;

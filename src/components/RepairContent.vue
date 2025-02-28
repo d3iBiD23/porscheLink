@@ -76,7 +76,7 @@ h2 {
 .taycanImage {
     position: relative;
     margin-top: -100px;
-    margin-left: 100px;
+    margin-left: 60px;
 }
 
 h2,

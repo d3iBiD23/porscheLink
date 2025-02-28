@@ -65,7 +65,7 @@
 .taycanImage {
     position: relative;
     margin-top: -100px;
-    margin-left: 100px;
+    margin-left: 60px;
 }
 
 .details-content {
