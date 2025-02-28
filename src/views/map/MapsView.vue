@@ -113,7 +113,7 @@ function goBackStep() {
 }
 
 function goHomePage() {
-    router.push('/details/homepage');
+    router.push('/homepage');
 }
 
 /* ESTADOS DE LA PANTALLA */

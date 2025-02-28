@@ -24,7 +24,7 @@
             <ion-icon :icon="personOutline" />
             <ion-label>Account</ion-label>
           </ion-tab-button>
-          <ion-tab-button tab="homepage" href="/details/homepage">
+          <ion-tab-button tab="homepage" href="/homepage">
             <ion-icon :icon="homeOutline" />
             <ion-label>Home</ion-label>
           </ion-tab-button>
@@ -44,7 +44,7 @@ import { helpCircleOutline, homeOutline, mapOutline, personOutline } from 'ionic
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
-const onMainScreen = computed(() => route.path === '/details/homepage')
+const onMainScreen = computed(() => route.path === '/homepage')
 </script>
 <style scoped>
 ion-tab-bar {

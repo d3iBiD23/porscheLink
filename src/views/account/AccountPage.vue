@@ -4,7 +4,7 @@
       <!-- Encabezado con botón de regreso y nombre de usuario -->
       <div class="header">
         <ion-buttons slot="start" class="back-button">
-          <ion-back-button default-href="/details/homepage" text=""></ion-back-button>
+          <ion-back-button default-href="/homepage" text=""></ion-back-button>
         </ion-buttons>
         <div class="profile-section">
           <ion-avatar class="avatar">

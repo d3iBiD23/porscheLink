@@ -40,10 +40,10 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "",
-        redirect: "/details/homepage",
+        redirect: "/homepage",
       },
       {
-        path: "homepage",
+        path: "/homepage",
         component: () => import("@/views/mainScreen/MainScreen.vue"),
       },
       {

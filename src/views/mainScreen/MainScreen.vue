@@ -120,7 +120,7 @@ const handleAction = (action: { name: string, icon: string }) => {
             router.push('/maps');
             break;
         case "STATS":
-            router.push('stats');
+            router.push('/details/stats');
             break;
         case "OBD":
             router.push({ path: '/details/overview', query: { tab: 'repair' } });
