@@ -46,13 +46,15 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { ref } from 'vue'
-import { IonPage, IonLabel, IonInput, IonButton} from '@ionic/vue'
+import { IonPage, IonLabel, IonInput, IonButton } from '@ionic/vue'
 
 
 const router = useRouter();
 
 const goToMainScreen = () => {
-    router.push('/porschelink/homepage');
+    router.push('/help').then(() => {
+        window.location.reload();
+    })
 };
 
 const goToLoginScreen = () => {
@@ -63,16 +65,16 @@ const goToLoginScreen = () => {
 
 <style scoped>
 .login-link {
-  text-align: center;
-  color: white;
-  font-size: 14px;
-  margin-top: 70px;
+    text-align: center;
+    color: white;
+    font-size: 14px;
+    margin-top: 70px;
 }
 
 .login-text {
-  color: #FFCA00;
-  text-decoration: none;
-  margin-left: 0.25rem;
+    color: #FFCA00;
+    text-decoration: none;
+    margin-left: 0.25rem;
 }
 
 

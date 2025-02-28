@@ -103,7 +103,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue';
+import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { IonPage, IonContent, IonButton, IonText, IonBackButton, IonButtons } from '@ionic/vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -298,6 +298,7 @@ const goToFunctions = () => {
   z-index: 2;
   /* Para que se vea por encima de otros elementos del layout */
   position: relative;
+  
 }
 
 .battery-status {
@@ -322,6 +323,7 @@ const goToFunctions = () => {
 
 .step2 {
   top: 120px;
+  
 }
 
 .percentage {
@@ -416,6 +418,7 @@ const goToFunctions = () => {
   font-size: 13px;
   font-weight: bolder;
   gap: 12px;
+  
 }
 
 /* ================== Tutorial Overlay ================== */
@@ -439,7 +442,7 @@ const goToFunctions = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.6);
   pointer-events: auto;
 }
 
@@ -500,6 +503,7 @@ const goToFunctions = () => {
   width: 100%;
   height: 100%;
   pointer-events: auto;
+  
 }
 
 /* Botón simulado */
@@ -528,6 +532,7 @@ const goToFunctions = () => {
 /* Opcional: posicionar el texto del tutorial en step 2 */
 .second-step {
   bottom: 20%;
+  
 }
 
 /* ================== Fin Tutorial Overlay ================== */

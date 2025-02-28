@@ -11,7 +11,8 @@
 
             <form class="login-form">
                 <div class="textPleaseDiv">
-                    <ion-label class="textPlease">Please Enter Your Email Address Or Your Phone Number To Receive A Verification
+                    <ion-label class="textPlease">Please Enter Your Email Address Or Your Phone Number To Receive A
+                        Verification
                         Code.</ion-label>
                 </div>
                 <div class="form-group">
@@ -37,14 +38,15 @@ const password = ref('')
 const router = useRouter();
 
 const goToMainScreen = () => {
-    router.push('/porschelink/homepage');
+    router.push('/help').then(() => {
+        window.location.reload();
+    })
 };
 
 
 </script>
 
 <style scoped>
-
 .login-container {
     font-family: 'Inter', sans-serif;
     font-weight: bold;
