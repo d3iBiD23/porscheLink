@@ -52,7 +52,7 @@ import { IonPage, IonLabel, IonInput, IonButton} from '@ionic/vue'
 const router = useRouter();
 
 const goToMainScreen = () => {
-    router.push('/tabs/homepage');
+    router.push('/porschelink/homepage');
 };
 
 const goToLoginScreen = () => {

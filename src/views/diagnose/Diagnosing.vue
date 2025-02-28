@@ -33,7 +33,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter(); // despues de 3 segundes se dirige a DiagnoseStatus.vue
 onMounted(() => {
     setTimeout(() => {
-        router.push('/details/diagnose');
+        router.push('/porschelink/diagnose');
     }, 3000)
 });
 </script>

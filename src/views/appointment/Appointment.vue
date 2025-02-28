@@ -4,7 +4,7 @@
             <!-- Header con back button y logo -->
             <div class="header">
                 <ion-buttons class="back-button">
-                    <ion-back-button default-href="/homepage" text=""></ion-back-button>
+                    <ion-back-button default-href="/porschelink/homepage" text=""></ion-back-button>
                 </ion-buttons>
                 <img src="/assets/logos/porscheLogo.svg" alt="Porsche" class="logo" />
             </div>
@@ -48,7 +48,7 @@ function confirmDate() {
 
     // Enviamos la fecha seleccionada como query param a Hour.vue
     router.push({
-        path: '/details/appointment/hour',
+        path: '/porschelink/appointment/hour',
         query: { date: selectedDate.value }
     });
 }

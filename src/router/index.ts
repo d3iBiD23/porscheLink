@@ -39,15 +39,15 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/mainHelp/HelpPage.vue"),
   },
   {
-    path: "/details",
+    path: "/porschelink",
     component: TabsPage,
     children: [
       {
         path: "",
-        redirect: "/homepage",
+        redirect: "homepage",
       },
       {
-        path: "/homepage",
+        path: "homepage",
         component: () => import("@/views/mainScreen/MainScreen.vue"),
       },
       {

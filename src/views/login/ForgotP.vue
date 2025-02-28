@@ -37,7 +37,7 @@ const password = ref('')
 const router = useRouter();
 
 const goToMainScreen = () => {
-    router.push('/tabs/homepage');
+    router.push('/porschelink/homepage');
 };
 
 

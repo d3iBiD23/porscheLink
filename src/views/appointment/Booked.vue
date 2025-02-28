@@ -40,7 +40,7 @@ onMounted(() => {
 });
 
 function goToRepair() {
-    router.push({ path: '/details/overview', query: { tab: 'repair' } });
+    router.push({ path: '/porschelink/overview', query: { tab: 'repair' } });
 }
 
 const formattedDateTime = computed(() => {

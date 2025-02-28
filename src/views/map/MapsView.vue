@@ -113,7 +113,7 @@ function goBackStep() {
 }
 
 function goHomePage() {
-    router.push('/homepage');
+    router.push('/porschelink/homepage');
 }
 
 /* ESTADOS DE LA PANTALLA */

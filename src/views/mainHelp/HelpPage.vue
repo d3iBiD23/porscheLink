@@ -81,7 +81,7 @@
       <!-- Tutorial Overlay Paso 2: Bloquea todo excepto el botón simulado -->
       <!-- Paso 2: Bloquea todo excepto el área del botón real -->
       <div v-else-if="step === 2" class="overlay-container">
-        <div class="full-overlay" />
+        <div class="full-overlay"></div>
         <!-- Rectángulos que cubren el resto de la pantalla -->
         <div v-for="(block, index) in overlayBlocks" :key="index" class="cover-block" :style="{
           top: block.top + 'px',
@@ -120,7 +120,7 @@ function goToStep2() {
 }
 
 function finishTutorial() {
-  router.push('/details/overview');
+  router.push('/porschelink/overview');
 }
 
 /* Layout variables y funciones */
@@ -135,7 +135,7 @@ const onSlideChange = (swiper: any) => {
 };
 
 function goToOverview() {
-  router.push('/details/overview');
+  router.push('/porschelink/overview');
 }
 
 const getCarTitle = () => {
@@ -176,7 +176,7 @@ const handleAction = (action: { name: string; icon: string }) => {
       router.push('stats');
       break;
     case 'OBD':
-      router.push({ path: '/details/overview', query: { tab: 'repair' } });
+      router.push({ path: '/porschelink/overview', query: { tab: 'repair' } });
       break;
     default:
       console.warn('Accion no reconocida.');
@@ -185,7 +185,7 @@ const handleAction = (action: { name: string; icon: string }) => {
 
 const goToFunctions = () => {
   router.replace({
-    path: '/details/overview',
+    path: '/porschelink/overview',
     query: { ...route.query, tab: 'functions', _force: Date.now() }
   });
 };

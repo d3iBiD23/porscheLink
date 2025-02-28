@@ -47,7 +47,9 @@ const password = ref('')
 const router = useRouter();
 
 const startApp = () => {
-    router.push('/help');
+    router.push('/help').then(() => {
+        window.location.reload();
+    })
 };
 
 const goToRegisterScreen = () => {

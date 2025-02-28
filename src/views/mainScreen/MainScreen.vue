@@ -82,7 +82,7 @@ const onSlideChange = (swiper: any) => {
 };
 
 const goToOverview = () => {
-    router.push('/details/overview');
+    router.push('/porschelink/overview');
 };
 
 const getCarTitle = () => {
@@ -120,10 +120,10 @@ const handleAction = (action: { name: string, icon: string }) => {
             router.push('/maps');
             break;
         case "STATS":
-            router.push('/details/stats');
+            router.push('/porschelink/stats');
             break;
         case "OBD":
-            router.push({ path: '/details/overview', query: { tab: 'repair' } });
+            router.push({ path: '/porschelink/overview', query: { tab: 'repair' } });
             break;
         default:
             console.warn("Accion no reconocida.");
@@ -133,7 +133,7 @@ const handleAction = (action: { name: string, icon: string }) => {
 const goToFunctions = () => {
     // Obtenemos la ruta y query actuales
     router.replace({
-        path: '/details/overview',
+        path: '/porschelink/overview',
         query: { ...route.query, tab: 'functions', _force: Date.now() }
     });
 };

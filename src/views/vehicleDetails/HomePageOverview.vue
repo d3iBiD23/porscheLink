@@ -97,7 +97,7 @@ function onSlideChange(swiper: any) {
   const newIndex = swiper.realIndex;
   const newTab = tabs.find(t => t.index === newIndex)?.value || 'details';
   selectedTab.value = newTab;
-  router.replace({ path: '/details/overview', query: { ...route.query, tab: newTab, _force: Date.now() } });
+  router.replace({ path: '/porschelink/overview', query: { ...route.query, tab: newTab, _force: Date.now() } });
 }
 
 // Al hacer clic en una pestaña, actualizamos la variable y movemos el Swiper
@@ -107,7 +107,7 @@ function updateTab(newTab: string) {
   if (tab && swiperInstance.value) {
     swiperInstance.value.slideTo(tab.index);
   }
-  router.replace({ path: '/details/overview', query: { ...route.query, tab: newTab, _force: Date.now() } });
+  router.replace({ path: '/porschelink/overview', query: { ...route.query, tab: newTab, _force: Date.now() } });
 }
 </script>
 

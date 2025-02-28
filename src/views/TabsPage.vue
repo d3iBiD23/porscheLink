@@ -19,11 +19,11 @@
         </template>
 
         <template v-else>
-          <ion-tab-button tab="accountpage" href="/details/accountpage">
+          <ion-tab-button tab="accountpage" href="/porschelink/accountpage">
             <ion-icon :icon="personOutline" />
             <ion-label>Account</ion-label>
           </ion-tab-button>
-          <ion-tab-button tab="homepage" href="/homepage">
+          <ion-tab-button tab="homepage" href="/porschelink/homepage">
             <ion-icon :icon="homeOutline" />
             <ion-label>Home</ion-label>
           </ion-tab-button>
@@ -46,9 +46,9 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 
 // Computada para determinar si estamos en la "pantalla principal"
-const onMainScreen = computed(() => route.path === '/homepage');
+const onMainScreen = computed(() => route.path === '/porschelink/homepage');
 
-const noTabPaths = ['/details/accountpage', '/account']
+const noTabPaths = ['/porschelink/accountpage', '/account']
 
 const showTabBar = computed(() => {
   return !noTabPaths.includes(route.path)

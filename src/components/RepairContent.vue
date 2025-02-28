@@ -46,11 +46,11 @@ const nextServiceDays = ref(23); // Ejemplo de días para el próximo servicio
 const lastDiagnose = ref('3 weeks ago');
 
 function bookAppointment() {
-    router.push('/details/appointment');
+    router.push('/porschelink/appointment');
 }
 
 function diagnoseVehicle() {
-    router.push('/details/diagnosing');
+    router.push('/porschelink/diagnosing');
 }
 
 </script>
